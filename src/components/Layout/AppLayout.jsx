@@ -6,12 +6,12 @@ import Header from '../Header';
 
 export function ResidentLayout() {
   const { user } = useApp();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Can be kept for mobile secondary menu if needed
 
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
+    <div className="min-h-screen flex bg-surface-100 w-full min-w-0 max-w-full">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -19,7 +19,7 @@ export function ResidentLayout() {
       />
       <div className="flex-1 min-w-0 flex flex-col">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
+        <main className="w-full min-w-0 p-4 lg:p-10 max-w-[1400px] mx-auto flex-1 pb-24 lg:pb-10">
           <Outlet />
         </main>
       </div>
@@ -32,9 +32,9 @@ export function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role !== 'admin') {
+  if (user.role !== 'committee') {
     return (
-      <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
+      <div className="min-h-screen flex bg-surface-100 w-full min-w-0 max-w-full">
         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -42,7 +42,7 @@ export function AdminLayout() {
         />
         <div className="flex-1 min-w-0 flex flex-col">
           <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
+          <main className="w-full min-w-0 p-4 lg:p-10 max-w-[1400px] mx-auto flex-1 pb-24 lg:pb-10">
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="bg-red-50 p-4 rounded-full mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,15 +61,15 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
+    <div className="min-h-screen flex bg-surface-100 w-full min-w-0 max-w-full">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        variant="admin"
+        variant="committee"
       />
       <div className="flex-1 min-w-0 flex flex-col">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
+        <main className="w-full min-w-0 p-4 lg:p-10 max-w-[1400px] mx-auto flex-1 pb-24 lg:pb-10">
           <Outlet />
         </main>
       </div>

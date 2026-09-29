@@ -32,42 +32,38 @@ export default function SocietyQRCode() {
   };
 
   return (
-    <div className="bg-surface-900 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-md w-full min-w-0 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/50 to-surface-900 z-0 pointer-events-none"></div>
+    <div className="bg-white border border-surface-200 shadow-sm w-full min-w-0 p-6 flex flex-col items-center">
+      <div className="text-center mb-8">
+        <h3 className="font-bold text-surface-900 tracking-tight text-lg mb-1">Quick Access</h3>
+        <p className="text-sm font-medium text-surface-500">Scan to open the workspace.</p>
+      </div>
       
-      <div className="relative z-10 w-full">
-        <h3 className="font-bold text-white mb-1.5 text-lg">SocietyHub</h3>
-        <p className="text-sm text-surface-300 mb-6 max-w-[250px] mx-auto">
-          Scan to access your society portal instantly.
-        </p>
-        
-        <div className="bg-white p-3.5 rounded-2xl shadow-lg mb-6 inline-block">
-          <QRCodeSVG 
-            id="society-qr"
-            value={loginUrl} 
-            size={160} 
-            level="M"
-            includeMargin={false}
-            fgColor="#0f172a"
-          />
-        </div>
-        
-        <div className="flex items-center gap-3 w-full justify-center">
-          <button 
-            onClick={copyLink}
-            className="flex-1 max-w-[120px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-surface-800 text-white border border-surface-700 text-sm font-medium hover:bg-surface-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
-            <Copy size={16} />
-            Copy
-          </button>
-          <button 
-            onClick={downloadQR}
-            className="flex-1 max-w-[120px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary-600 text-white border border-transparent text-sm font-medium hover:bg-primary-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500"
-          >
-            <Download size={16} />
-            Save QR
-          </button>
-        </div>
+      <div className="bg-white p-4 border border-surface-200 mb-8 inline-block shadow-sm">
+        <QRCodeSVG 
+          id="society-qr"
+          value={loginUrl} 
+          size={180} 
+          level="H"
+          includeMargin={false}
+          fgColor="#171A19" // Graphite
+        />
+      </div>
+      
+      <div className="flex items-center gap-3 w-full justify-center max-w-[280px]">
+        <button 
+          onClick={copyLink}
+          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-surface-50 text-surface-900 border border-surface-200 text-sm font-semibold hover:bg-surface-100 transition-colors"
+        >
+          <Copy size={16} />
+          Copy
+        </button>
+        <button 
+          onClick={downloadQR}
+          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-surface-900 text-white border border-transparent text-sm font-semibold hover:bg-surface-800 transition-colors"
+        >
+          <Download size={16} />
+          Save
+        </button>
       </div>
     </div>
   );

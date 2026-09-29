@@ -29,51 +29,51 @@ export default function AdminPayments() {
   };
 
   return (
-    <div className="space-y-6 w-full min-w-0">
+    <div className="space-y-8 pb-10 w-full min-w-0">
       <div>
-        <h1 className="text-2xl font-bold text-surface-900">Maintenance Collection</h1>
-        <p className="text-surface-500 mt-0.5">Track and manage society maintenance dues.</p>
+        <h1 className="text-3xl font-bold text-surface-900 tracking-tight">Maintenance Collection</h1>
+        <p className="text-lg text-surface-500 mt-2">Track and manage society maintenance dues.</p>
       </div>
 
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full min-w-0">
-        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
             <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Total Expected</p>
-            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalExpected)}</p>
+            <p className="text-3xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalExpected)}</p>
           </div>
-          <div className="bg-blue-50 text-blue-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-            <Receipt size={20} />
+          <div className="bg-surface-100 text-surface-700 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <Receipt size={24} />
           </div>
         </div>
         
-        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
             <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Collected</p>
-            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalCollected)}</p>
+            <p className="text-3xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalCollected)}</p>
           </div>
           <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-            <IndianRupee size={20} />
+            <IndianRupee size={24} />
           </div>
         </div>
         
-        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
             <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Pending</p>
-            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{pendingCount}</p>
+            <p className="text-3xl font-bold text-surface-900 truncate tracking-tight">{pendingCount}</p>
           </div>
           <div className="bg-amber-50 text-amber-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-            <Bell size={20} />
+            <Bell size={24} />
           </div>
         </div>
         
-        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
             <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Collection Rate</p>
-            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{collectionRate}%</p>
+            <p className="text-3xl font-bold text-surface-900 truncate tracking-tight">{collectionRate}%</p>
           </div>
-          <div className="bg-purple-50 text-purple-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
-            <IndianRupee size={20} />
+          <div className="bg-primary-50 text-primary-700 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <IndianRupee size={24} />
           </div>
         </div>
       </div>
@@ -81,23 +81,23 @@ export default function AdminPayments() {
       {/* Member Table Section */}
       <div className="bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden min-w-0">
         <div className="p-4 border-b border-surface-200 flex flex-col sm:flex-row gap-4 justify-between items-center bg-surface-50">
-          <div className="relative w-full sm:w-64">
-            <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
+          <div className="relative w-full sm:w-72">
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-surface-400" />
             <input
               type="text"
               placeholder="Search resident or flat..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all bg-white"
+              className="w-full pl-11 pr-4 py-3 rounded-xl border border-surface-200 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 text-sm font-medium transition-all bg-white"
             />
           </div>
           
-          <div className="flex gap-1.5 p-1 bg-surface-100/50 rounded-xl border border-surface-200/50">
+          <div className="flex gap-2 p-1 bg-surface-100/50 rounded-xl border border-surface-200/50">
             {['All', 'Paid', 'Pending'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
+                className={`px-5 py-2 rounded-lg text-sm font-bold transition-all ${
                   filter === f
                     ? 'bg-white text-surface-900 shadow-sm border border-surface-200'
                     : 'text-surface-500 hover:text-surface-700 hover:bg-surface-100/50 border border-transparent'
@@ -133,7 +133,7 @@ export default function AdminPayments() {
                     <td className="px-5 py-4 font-medium text-surface-700">{formatCurrency(CURRENT_DUE.amount)}</td>
                     <td className="px-5 py-4 text-surface-500 font-medium">{formatDate(CURRENT_DUE.dueDate)}</td>
                     <td className="px-5 py-4">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${r.paymentStatus === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'}`}>
+                      <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wide border ${r.paymentStatus === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'}`}>
                         {r.paymentStatus}
                       </span>
                     </td>
@@ -155,10 +155,10 @@ export default function AdminPayments() {
                           className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors ${
                             r.reminderSent
                               ? 'bg-surface-100 text-surface-400 cursor-not-allowed opacity-100'
-                              : 'bg-primary-50 text-primary-600 hover:bg-primary-100 opacity-0 group-hover:opacity-100 focus:opacity-100'
+                              : 'bg-primary-50 text-primary-700 hover:bg-primary-100 opacity-0 group-hover:opacity-100 focus:opacity-100'
                           }`}
                         >
-                          <Bell size={13} />
+                          <Bell size={14} />
                           {r.reminderSent ? 'Sent' : 'Remind'}
                         </button>
                       )}

@@ -78,42 +78,44 @@ export default function AdminComplaints() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-10">
       <div>
-        <h1 className="text-2xl font-bold text-surface-900">Manage Complaints</h1>
-        <p className="text-surface-500 mt-0.5">Review, respond, and manage all society complaints.</p>
+        <h1 className="text-3xl font-bold text-surface-900 tracking-tight">Manage Complaints</h1>
+        <p className="text-lg text-surface-500 mt-2">Review, respond, and manage all society complaints.</p>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-surface-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by ID, title, or resident…"
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 transition"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all font-medium placeholder:text-surface-400"
           />
         </div>
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
-          aria-label="Filter by status"
-        >
-          <option value="All">All Status</option>
-          {STATUSES.map((s) => <option key={s}>{s}</option>)}
-        </select>
-        <select
-          value={categoryFilter}
-          onChange={(e) => setCategoryFilter(e.target.value)}
-          className="px-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
-          aria-label="Filter by category"
-        >
-          <option value="All">All Categories</option>
-          {COMPLAINT_CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-        </select>
+        <div className="flex gap-4">
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+            aria-label="Filter by status"
+          >
+            <option value="All">All Status</option>
+            {STATUSES.map((s) => <option key={s}>{s}</option>)}
+          </select>
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
+            aria-label="Filter by category"
+          >
+            <option value="All">All Categories</option>
+            {COMPLAINT_CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+          </select>
+        </div>
       </div>
 
       {/* Table */}

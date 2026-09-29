@@ -80,39 +80,39 @@ export default function Complaints() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 pb-10">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-surface-900">My Complaints</h1>
-          <p className="text-surface-500 mt-0.5">Track and manage your submitted complaints.</p>
+          <h1 className="text-3xl font-bold text-surface-900 tracking-tight">Complaints</h1>
+          <p className="text-surface-500 mt-2 text-lg">Track and manage your submitted complaints.</p>
         </div>
         <button
           onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors shrink-0"
+          className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-500 active:bg-primary-700 text-white text-sm font-bold px-6 py-3 rounded-xl transition-all shrink-0 shadow-sm"
         >
-          <Plus size={16} />
+          <Plus size={18} />
           New Complaint
         </button>
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
+          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-surface-400" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search complaints…"
-            className="w-full pl-9 pr-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition"
+            className="w-full pl-11 pr-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all font-medium placeholder:text-surface-400"
           />
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
+            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
             aria-label="Filter by status"
           >
             <option value="All">All Status</option>
@@ -124,7 +124,7 @@ export default function Complaints() {
           <select
             value={categoryFilter}
             onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-3 py-2 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
+            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
             aria-label="Filter by category"
           >
             <option value="All">All Categories</option>
