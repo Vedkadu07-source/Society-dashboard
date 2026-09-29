@@ -139,35 +139,42 @@ export default function Complaints() {
       {filtered.length > 0 ? (
         <>
           {/* Table – hidden on mobile */}
-          <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
+          <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-surface-50 text-surface-600 text-left">
-                    <th className="px-4 py-3 font-medium">ID</th>
-                    <th className="px-4 py-3 font-medium">Complaint</th>
-                    <th className="px-4 py-3 font-medium">Category</th>
-                    <th className="px-4 py-3 font-medium">Date</th>
-                    <th className="px-4 py-3 font-medium">Status</th>
-                    <th className="px-4 py-3 font-medium">Action</th>
+                  <tr className="bg-surface-50 border-b border-surface-200 text-surface-500 text-left text-[11px] uppercase tracking-wider font-bold">
+                    <th className="px-5 py-4">ID</th>
+                    <th className="px-5 py-4">Complaint</th>
+                    <th className="px-5 py-4">Category</th>
+                    <th className="px-5 py-4">Date</th>
+                    <th className="px-5 py-4">Status</th>
+                    <th className="px-5 py-4 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-100">
                   {filtered.map((c) => (
-                    <tr key={c.id} className="hover:bg-surface-50 transition-colors">
-                      <td className="px-4 py-3 font-medium text-surface-700">{c.id}</td>
-                      <td className="px-4 py-3 text-surface-800 max-w-xs truncate">{c.title}</td>
-                      <td className="px-4 py-3 text-surface-600">{c.category}</td>
-                      <td className="px-4 py-3 text-surface-500">{formatDate(c.date)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(c.status)}`}>
+                    <tr key={c.id} className="hover:bg-surface-50 transition-colors group">
+                      <td className="px-5 py-4 font-medium text-surface-500 text-xs">{c.id}</td>
+                      <td className="px-5 py-4 text-surface-900 font-medium max-w-xs truncate">{c.title}</td>
+                      <td className="px-5 py-4 text-surface-600">
+                        <span className="bg-surface-100 border border-surface-200 px-2 py-0.5 rounded-full text-xs font-medium">{c.category}</span>
+                      </td>
+                      <td className="px-5 py-4 text-surface-500">{formatDate(c.date)}</td>
+                      <td className="px-5 py-4">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${
+                          c.status === 'Resolved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' :
+                          c.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-200/60' :
+                          c.status === 'In Progress' ? 'bg-blue-50 text-blue-700 border-blue-200/60' :
+                          'bg-amber-50 text-amber-700 border-amber-200/60'
+                        }`}>
                           {c.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-4 text-right">
                         <button
                           onClick={() => setSelected(c)}
-                          className="text-primary-600 hover:text-primary-700 text-sm font-medium"
+                          className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                         >
                           View
                         </button>
@@ -198,7 +205,6 @@ export default function Complaints() {
         </div>
       )}
 
-      {/* New complaint form modal */}
       {showForm && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
@@ -207,81 +213,81 @@ export default function Complaints() {
             if (e.target === e.currentTarget) resetForm();
           }}
         >
-          <div className="modal-content bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-surface-200">
-              <h2 className="text-lg font-semibold text-surface-900">Submit New Complaint</h2>
-              <button onClick={resetForm} className="p-1 rounded-md hover:bg-surface-100 text-surface-500" aria-label="Close">
+          <div className="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-surface-200">
+              <h2 className="text-xl font-bold text-surface-900 tracking-tight">Submit New Complaint</h2>
+              <button onClick={resetForm} className="p-2 rounded-xl hover:bg-surface-100 text-surface-500 transition-colors" aria-label="Close">
                 <X size={20} />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-4 space-y-4">
+            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-5 space-y-5">
               {/* Title */}
               <div>
-                <label htmlFor="cmp-title" className="block text-sm font-medium text-surface-700 mb-1.5">Complaint Title</label>
+                <label htmlFor="cmp-title" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Complaint Title</label>
                 <input
                   id="cmp-title"
                   type="text"
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className={`w-full px-3.5 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 ${formErrors.title ? 'border-red-400' : 'border-surface-300'}`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.title ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
                   placeholder="e.g. Water leakage in Block A"
                 />
-                {formErrors.title && <p className="text-xs text-red-500 mt-1">{formErrors.title}</p>}
+                {formErrors.title && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.title}</p>}
               </div>
 
               {/* Category */}
               <div>
-                <label htmlFor="cmp-cat" className="block text-sm font-medium text-surface-700 mb-1.5">Category</label>
+                <label htmlFor="cmp-cat" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Category</label>
                 <select
                   id="cmp-cat"
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className={`w-full px-3.5 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white ${formErrors.category ? 'border-red-400' : 'border-surface-300'}`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.category ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
                 >
                   <option value="">Select category</option>
                   {COMPLAINT_CATEGORIES.map((c) => (
                     <option key={c}>{c}</option>
                   ))}
                 </select>
-                {formErrors.category && <p className="text-xs text-red-500 mt-1">{formErrors.category}</p>}
+                {formErrors.category && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.category}</p>}
               </div>
 
               {/* Description */}
               <div>
-                <label htmlFor="cmp-desc" className="block text-sm font-medium text-surface-700 mb-1.5">Description</label>
+                <label htmlFor="cmp-desc" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Description</label>
                 <textarea
                   id="cmp-desc"
                   rows={3}
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className={`w-full px-3.5 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none ${formErrors.description ? 'border-red-400' : 'border-surface-300'}`}
+                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all resize-none ${formErrors.description ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
                   placeholder="Describe the issue in detail…"
                 />
-                {formErrors.description && <p className="text-xs text-red-500 mt-1">{formErrors.description}</p>}
+                {formErrors.description && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.description}</p>}
               </div>
 
               {/* Location + Flat */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="cmp-loc" className="block text-sm font-medium text-surface-700 mb-1.5">Location / Block</label>
+                  <label htmlFor="cmp-loc" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Location / Block</label>
                   <input
                     id="cmp-loc"
                     type="text"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className={`w-full px-3.5 py-2.5 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 ${formErrors.location ? 'border-red-400' : 'border-surface-300'}`}
+                    className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.location ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
                     placeholder="Block A"
                   />
-                  {formErrors.location && <p className="text-xs text-red-500 mt-1">{formErrors.location}</p>}
+                  {formErrors.location && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.location}</p>}
                 </div>
                 <div>
-                  <label htmlFor="cmp-flat" className="block text-sm font-medium text-surface-700 mb-1.5">Flat Number</label>
+                  <label htmlFor="cmp-flat" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Flat Number</label>
                   <input
                     id="cmp-flat"
                     type="text"
                     value={form.flat}
                     onChange={(e) => setForm({ ...form, flat: e.target.value })}
-                    className="w-full px-3.5 py-2.5 rounded-lg border border-surface-300 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className="w-full px-4 py-3 rounded-xl border border-surface-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white"
                     placeholder="A-204"
                   />
                 </div>
@@ -289,16 +295,16 @@ export default function Complaints() {
 
               {/* File upload */}
               <div>
-                <label className="block text-sm font-medium text-surface-700 mb-1.5">Attachment (optional)</label>
+                <label className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Attachment (optional)</label>
                 <label
                   htmlFor="cmp-file"
-                  className="flex items-center gap-3 px-3.5 py-3 rounded-lg border border-dashed border-surface-300 cursor-pointer hover:border-primary-400 hover:bg-primary-50/30 transition text-sm text-surface-500"
+                  className="flex items-center gap-3 px-4 py-4 rounded-xl border-2 border-dashed border-surface-300 cursor-pointer hover:border-primary-400 hover:bg-primary-50/50 transition-all text-sm text-surface-500"
                 >
                   <Upload size={18} className="text-surface-400" />
                   {form.file ? (
-                    <span className="text-surface-700">{form.file.name}</span>
+                    <span className="text-surface-900 font-bold">{form.file.name}</span>
                   ) : (
-                    <span>Click to upload an image</span>
+                    <span className="font-medium text-surface-500">Click to upload an image</span>
                   )}
                   <input
                     id="cmp-file"
@@ -311,17 +317,17 @@ export default function Complaints() {
               </div>
 
               {/* Submit */}
-              <div className="flex justify-end gap-3 pt-2">
+              <div className="flex justify-end gap-3 pt-4 border-t border-surface-100">
                 <button
                   type="button"
                   onClick={resetForm}
-                  className="px-4 py-2 text-sm font-medium text-surface-600 hover:bg-surface-100 rounded-lg transition"
+                  className="px-5 py-2.5 text-sm font-bold text-surface-600 hover:bg-surface-100 rounded-xl transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                  className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all shadow-sm"
                 >
                   <Send size={16} />
                   Submit Complaint

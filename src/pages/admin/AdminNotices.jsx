@@ -48,66 +48,66 @@ export default function AdminNotices() {
     <div className="space-y-6 w-full min-w-0">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-surface-900">Manage Notices</h1>
-          <p className="text-surface-500 mt-1">Create and broadcast announcements to all residents.</p>
+          <h1 className="text-2xl font-bold text-surface-900 tracking-tight">Manage Notices</h1>
+          <p className="text-sm font-medium text-surface-500 mt-1">Create and broadcast announcements to all residents.</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium px-4 py-2.5 rounded-lg transition-colors shadow-sm"
+          className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm"
         >
           <Plus size={18} />
           Create Notice
         </button>
       </div>
 
-      <div className="bg-white rounded-xl border border-surface-200 shadow-sm overflow-hidden min-w-0">
+      <div className="bg-white rounded-2xl border border-surface-200 shadow-sm overflow-hidden min-w-0">
         <div className="overflow-x-auto min-w-0 w-full">
           <table className="w-full text-left border-collapse min-w-[700px]">
             <thead>
-              <tr className="bg-surface-50 border-b border-surface-200 text-sm text-surface-500">
-                <th className="p-4 font-medium">Title & Category</th>
-                <th className="p-4 font-medium">Date</th>
-                <th className="p-4 font-medium">Importance</th>
-                <th className="p-4 font-medium text-right">Actions</th>
+              <tr className="bg-surface-50 border-b border-surface-200 text-[11px] font-bold uppercase tracking-wider text-surface-500">
+                <th className="px-5 py-4">Title & Category</th>
+                <th className="px-5 py-4">Date</th>
+                <th className="px-5 py-4">Importance</th>
+                <th className="px-5 py-4 text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-100">
               {notices.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="p-8 text-center text-surface-500">
+                  <td colSpan={4} className="p-8 text-center text-sm font-medium text-surface-500">
                     No notices created yet.
                   </td>
                 </tr>
               ) : (
                 notices.map((n) => (
-                  <tr key={n.id} className="hover:bg-surface-50 transition-colors">
-                    <td className="p-4">
-                      <p className="font-medium text-surface-900">{n.title}</p>
-                      <p className="text-xs text-surface-500 mt-0.5">{n.category}</p>
+                  <tr key={n.id} className="hover:bg-surface-50 transition-colors group">
+                    <td className="px-5 py-4">
+                      <p className="font-bold text-surface-900 mb-1 text-base">{n.title}</p>
+                      <span className="bg-surface-100 border border-surface-200 px-2 py-0.5 rounded-full text-xs font-medium text-surface-600">{n.category}</span>
                     </td>
-                    <td className="p-4">
-                      <span className="flex items-center gap-1.5 text-sm text-surface-600">
-                        <CalendarClock size={14} />
+                    <td className="px-5 py-4">
+                      <span className="flex items-center gap-1.5 text-sm font-medium text-surface-600">
+                        <CalendarClock size={14} className="text-surface-400" />
                         {new Date(n.date).toLocaleDateString('en-GB')}
                       </span>
                     </td>
-                    <td className="p-4">
+                    <td className="px-5 py-4">
                       {n.important ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-red-600 bg-red-50 border border-red-100">
-                          <AlertCircle size={12} />
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wide text-red-700 bg-red-50 border border-red-200/60">
+                          <AlertCircle size={14} className="text-red-500" />
                           Important
                         </span>
                       ) : (
-                        <span className="text-sm text-surface-500">Normal</span>
+                        <span className="text-sm font-medium text-surface-400">Normal</span>
                       )}
                     </td>
-                    <td className="p-4 text-right">
+                    <td className="px-5 py-4 text-right">
                       <button
                         onClick={() => setDeleteConfirm(n.id)}
-                        className="p-2 text-surface-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                        className="p-2 text-surface-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                         title="Delete Notice"
                       >
-                        <Trash2 size={16} />
+                        <Trash2 size={18} />
                       </button>
                     </td>
                   </tr>

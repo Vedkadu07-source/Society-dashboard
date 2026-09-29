@@ -32,40 +32,42 @@ export default function SocietyQRCode() {
   };
 
   return (
-    <div className="bg-white rounded-xl border border-surface-200 p-6 flex flex-col items-center justify-center text-center shadow-sm w-full min-w-0">
-      <h3 className="font-semibold text-surface-900 mb-1">Society QR</h3>
-      <p className="text-sm text-surface-500 mb-6 max-w-[250px]">
-        Scan to quickly access your society portal.
-      </p>
+    <div className="bg-surface-900 rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-md w-full min-w-0 relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-tr from-primary-900/50 to-surface-900 z-0 pointer-events-none"></div>
       
-      <div className="bg-white p-3 rounded-xl border border-surface-200 shadow-sm mb-4 inline-block">
-        <QRCodeSVG 
-          id="society-qr"
-          value={loginUrl} 
-          size={160} 
-          level="M"
-          includeMargin={false}
-          fgColor="#0f172a"
-        />
-      </div>
-      
-      <p className="text-sm font-medium text-surface-800 mb-5">Green Valley Society</p>
-      
-      <div className="flex items-center gap-3 w-full max-w-[260px]">
-        <button 
-          onClick={copyLink}
-          className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg border border-surface-200 bg-white text-surface-700 text-sm font-medium hover:bg-surface-50 hover:border-surface-300 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-        >
-          <Copy size={16} />
-          Copy Link
-        </button>
-        <button 
-          onClick={downloadQR}
-          className="flex-1 flex items-center justify-center gap-2 py-2 px-3 rounded-lg bg-primary-50 text-primary-700 border border-transparent text-sm font-medium hover:bg-primary-100 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1"
-        >
-          <Download size={16} />
-          Download
-        </button>
+      <div className="relative z-10 w-full">
+        <h3 className="font-bold text-white mb-1.5 text-lg">SocietyHub</h3>
+        <p className="text-sm text-surface-300 mb-6 max-w-[250px] mx-auto">
+          Scan to access your society portal instantly.
+        </p>
+        
+        <div className="bg-white p-3.5 rounded-2xl shadow-lg mb-6 inline-block">
+          <QRCodeSVG 
+            id="society-qr"
+            value={loginUrl} 
+            size={160} 
+            level="M"
+            includeMargin={false}
+            fgColor="#0f172a"
+          />
+        </div>
+        
+        <div className="flex items-center gap-3 w-full justify-center">
+          <button 
+            onClick={copyLink}
+            className="flex-1 max-w-[120px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-surface-800 text-white border border-surface-700 text-sm font-medium hover:bg-surface-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            <Copy size={16} />
+            Copy
+          </button>
+          <button 
+            onClick={downloadQR}
+            className="flex-1 max-w-[120px] flex items-center justify-center gap-2 py-2 px-3 rounded-xl bg-primary-600 text-white border border-transparent text-sm font-medium hover:bg-primary-700 transition-all focus:outline-none focus:ring-2 focus:ring-primary-500"
+          >
+            <Download size={16} />
+            Save QR
+          </button>
+        </div>
       </div>
     </div>
   );

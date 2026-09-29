@@ -27,27 +27,31 @@ export default function Payments() {
       </div>
 
       {/* Current due card */}
-      <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-6 sm:p-8 relative overflow-hidden">
+        <div className="absolute right-0 top-0 w-64 h-64 bg-gradient-to-bl from-primary-50 to-transparent rounded-bl-full opacity-60 pointer-events-none" />
+        
+        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
           <div className="flex items-start gap-4">
-            <div className={`p-3 rounded-lg shrink-0 ${currentDuePaid ? 'bg-emerald-50' : 'bg-amber-50'}`}>
+            <div className={`p-3.5 rounded-xl shrink-0 border shadow-sm ${currentDuePaid ? 'bg-emerald-50 border-emerald-100' : 'bg-amber-50 border-amber-100'}`}>
               {currentDuePaid ? (
-                <CheckCircle2 size={24} className="text-emerald-600" />
+                <CheckCircle2 size={28} className="text-emerald-500" />
               ) : (
-                <Clock size={24} className="text-amber-600" />
+                <Clock size={28} className="text-amber-500" />
               )}
             </div>
             <div>
-              <p className="text-sm text-surface-500 mb-1">
+              <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1">
                 Maintenance Fee — {CURRENT_DUE.month}
               </p>
-              <p className="text-2xl font-bold text-surface-900">{formatCurrency(CURRENT_DUE.amount)}</p>
-              <div className="flex items-center gap-3 mt-2 text-sm">
-                <span className="flex items-center gap-1 text-surface-500">
-                  <CalendarDays size={14} />
+              <p className="text-3xl font-bold text-surface-900 tracking-tight mb-2">{formatCurrency(CURRENT_DUE.amount)}</p>
+              <div className="flex flex-wrap items-center gap-3 mt-2 text-sm font-medium">
+                <span className="flex items-center gap-1.5 text-surface-600 bg-surface-50 px-2.5 py-1 rounded-md border border-surface-200">
+                  <CalendarDays size={14} className="text-surface-400" />
                   Due: {formatDate(CURRENT_DUE.dueDate)}
                 </span>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(currentDuePaid ? 'Paid' : 'Pending')}`}>
+                <span className={`inline-flex items-center px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wide border ${
+                  currentDuePaid ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'
+                }`}>
                   {currentDuePaid ? 'Paid' : 'Pending'}
                 </span>
               </div>
@@ -57,53 +61,56 @@ export default function Payments() {
           {!currentDuePaid && (
             <button
               onClick={() => setPayModal(true)}
-              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-medium px-5 py-2.5 rounded-lg transition-colors shrink-0"
+              className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white font-semibold px-6 py-3 rounded-xl transition-all shadow-sm shrink-0"
             >
               <CreditCard size={18} />
-              Pay Maintenance Fee
+              Pay Maintenance
             </button>
           )}
         </div>
         {currentDuePaid && (
-          <p className="text-xs text-surface-400 mt-3">
-            ✓ Your payment for {CURRENT_DUE.month} has been recorded.
-          </p>
+          <div className="relative z-10 mt-6 pt-4 border-t border-surface-100 flex items-center gap-2 text-sm font-medium text-emerald-700">
+            <CheckCircle2 size={16} />
+            Your payment for {CURRENT_DUE.month} has been successfully recorded.
+          </div>
         )}
       </div>
 
       {/* Payment history */}
       <div>
-        <h2 className="text-lg font-semibold text-surface-900 mb-4">Payment History</h2>
+        <h2 className="text-xl font-bold text-surface-900 tracking-tight mb-4">Payment History</h2>
 
         {payments.length > 0 ? (
           <>
             {/* Desktop table */}
-            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
+            <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-surface-50 text-surface-600 text-left">
-                    <th className="px-4 py-3 font-medium">Month</th>
-                    <th className="px-4 py-3 font-medium text-right">Amount</th>
-                    <th className="px-4 py-3 font-medium">Date</th>
-                    <th className="px-4 py-3 font-medium">Status</th>
-                    <th className="px-4 py-3 font-medium">Receipt</th>
+                  <tr className="bg-surface-50 border-b border-surface-200 text-surface-500 text-left text-[11px] uppercase tracking-wider font-bold">
+                    <th className="px-5 py-4">Month</th>
+                    <th className="px-5 py-4 text-right">Amount</th>
+                    <th className="px-5 py-4">Date</th>
+                    <th className="px-5 py-4">Status</th>
+                    <th className="px-5 py-4 text-right">Receipt</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-100">
                   {payments.map((p) => (
-                    <tr key={p.id} className="hover:bg-surface-50 transition-colors">
-                      <td className="px-4 py-3 font-medium text-surface-800">{p.month}</td>
-                      <td className="px-4 py-3 text-right text-surface-700">{formatCurrency(p.amount)}</td>
-                      <td className="px-4 py-3 text-surface-500">{formatDate(p.date)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(p.status)}`}>
+                    <tr key={p.id} className="hover:bg-surface-50 transition-colors group">
+                      <td className="px-5 py-4 font-bold text-surface-900">{p.month}</td>
+                      <td className="px-5 py-4 text-right font-medium text-surface-700">{formatCurrency(p.amount)}</td>
+                      <td className="px-5 py-4 text-surface-500 font-medium">{formatDate(p.date)}</td>
+                      <td className="px-5 py-4">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${
+                          p.status === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'
+                        }`}>
                           {p.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-4 text-right">
                         <button
                           onClick={() => setReceipt(p)}
-                          className="text-primary-600 hover:text-primary-700 text-sm font-medium flex items-center gap-1"
+                          className="inline-flex items-center gap-1.5 text-primary-600 hover:text-primary-700 hover:bg-primary-50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
                         >
                           <FileText size={14} />
                           View

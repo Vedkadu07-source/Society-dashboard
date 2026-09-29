@@ -88,28 +88,38 @@ export default function Dashboard() {
         <div className="xl:col-span-2 space-y-6 min-w-0">
           
           {/* Maintenance Section */}
-          <div className="bg-white rounded-xl border border-surface-200 p-6 shadow-sm min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+          <div className="bg-white rounded-2xl border border-surface-200 p-6 sm:p-8 shadow-sm min-w-0 relative overflow-hidden">
+            {/* Background decoration */}
+            <div className="absolute right-0 top-0 w-64 h-64 bg-gradient-to-bl from-primary-50 to-transparent rounded-bl-full opacity-60 pointer-events-none" />
+            
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-6 mb-8">
               <div>
-                <h2 className="text-lg font-semibold text-surface-900">Maintenance Fee</h2>
-                <p className="text-sm text-surface-500">{CURRENT_DUE.month}</p>
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-surface-100 text-surface-600 text-xs font-semibold uppercase tracking-wider mb-3">
+                  <IndianRupee size={12} />
+                  Maintenance Fee
+                </div>
+                <h2 className="text-3xl font-bold text-surface-900 tracking-tight">{formatCurrency(CURRENT_DUE.amount)}</h2>
+                <p className="text-sm font-medium text-surface-500 mt-1">For {CURRENT_DUE.month}</p>
               </div>
-              <div className="text-left sm:text-right">
-                <p className="text-2xl font-bold text-surface-900">{formatCurrency(CURRENT_DUE.amount)}</p>
-                <p className="text-sm text-surface-500">Due: {formatDate(CURRENT_DUE.dueDate)}</p>
+              
+              <div className="sm:text-right">
+                <p className="text-sm font-medium text-surface-500 mb-1">Due Date</p>
+                <p className="text-base font-semibold text-surface-900">{formatDate(CURRENT_DUE.dueDate)}</p>
               </div>
             </div>
             
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-surface-100">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium text-surface-600">Status:</span>
+            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-5 border-t border-surface-100">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-surface-500">Status:</span>
                 {currentDuePaid ? (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-700">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200/50">
+                    <CheckCircle2 size={14} className="text-emerald-500" />
                     Paid on {lastPayment ? formatDate(lastPayment.date) : 'Recently'}
                   </span>
                 ) : (
-                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-100 text-amber-700">
-                    Pending
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200/50">
+                    <CreditCard size={14} className="text-amber-500" />
+                    Pending Payment
                   </span>
                 )}
               </div>
@@ -118,17 +128,17 @@ export default function Dashboard() {
                 {currentDuePaid ? (
                   <Link 
                     to="/payments"
-                    className="inline-flex items-center gap-2 bg-surface-100 hover:bg-surface-200 text-surface-700 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                    className="inline-flex items-center justify-center gap-2 bg-white border border-surface-200 hover:bg-surface-50 hover:border-surface-300 text-surface-700 text-sm font-semibold px-5 py-2.5 rounded-xl transition-all shadow-sm"
                   >
                     View Receipt
                   </Link>
                 ) : (
                   <button 
                     onClick={() => setPayModalOpen(true)}
-                    className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors shadow-sm"
+                    className="inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-semibold px-6 py-2.5 rounded-xl transition-all shadow-sm"
                   >
                     <CreditCard size={16} />
-                    Pay Maintenance
+                    Pay Now
                   </button>
                 )}
               </div>

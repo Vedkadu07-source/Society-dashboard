@@ -119,47 +119,54 @@ export default function AdminComplaints() {
       {/* Table */}
       {filtered.length > 0 ? (
         <>
-          <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
+          <div className="hidden lg:block bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-surface-50 text-surface-600 text-left">
-                    <th className="px-4 py-3 font-medium">ID</th>
-                    <th className="px-4 py-3 font-medium">Resident</th>
-                    <th className="px-4 py-3 font-medium">Flat</th>
-                    <th className="px-4 py-3 font-medium">Complaint</th>
-                    <th className="px-4 py-3 font-medium">Category</th>
-                    <th className="px-4 py-3 font-medium">Date</th>
-                    <th className="px-4 py-3 font-medium">Status</th>
-                    <th className="px-4 py-3 font-medium">Actions</th>
+                  <tr className="bg-surface-50 border-b border-surface-200 text-surface-500 text-left text-[11px] uppercase tracking-wider font-bold">
+                    <th className="px-5 py-4">ID</th>
+                    <th className="px-5 py-4">Resident</th>
+                    <th className="px-5 py-4">Flat</th>
+                    <th className="px-5 py-4">Complaint</th>
+                    <th className="px-5 py-4">Category</th>
+                    <th className="px-5 py-4">Date</th>
+                    <th className="px-5 py-4">Status</th>
+                    <th className="px-5 py-4 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-100">
                   {filtered.map((c) => (
-                    <tr key={c.id} className="hover:bg-surface-50 transition-colors">
-                      <td className="px-4 py-3 font-medium text-surface-700">{c.id}</td>
-                      <td className="px-4 py-3 text-surface-700">{c.resident}</td>
-                      <td className="px-4 py-3 text-surface-500">{c.flat}</td>
-                      <td className="px-4 py-3 text-surface-800 max-w-[200px] truncate">{c.title}</td>
-                      <td className="px-4 py-3 text-surface-600">{c.category}</td>
-                      <td className="px-4 py-3 text-surface-500">{formatDate(c.date)}</td>
-                      <td className="px-4 py-3">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(c.status)}`}>
+                    <tr key={c.id} className="hover:bg-surface-50 transition-colors group">
+                      <td className="px-5 py-4 font-medium text-surface-500 text-xs">{c.id}</td>
+                      <td className="px-5 py-4 font-medium text-surface-900">{c.resident}</td>
+                      <td className="px-5 py-4 text-surface-500">{c.flat}</td>
+                      <td className="px-5 py-4 text-surface-800 max-w-[200px] truncate font-medium">{c.title}</td>
+                      <td className="px-5 py-4 text-surface-600">
+                        <span className="bg-surface-100 border border-surface-200 px-2 py-0.5 rounded-full text-xs font-medium">{c.category}</span>
+                      </td>
+                      <td className="px-5 py-4 text-surface-500">{formatDate(c.date)}</td>
+                      <td className="px-5 py-4">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${
+                          c.status === 'Resolved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' :
+                          c.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-200/60' :
+                          c.status === 'In Progress' ? 'bg-blue-50 text-blue-700 border-blue-200/60' :
+                          'bg-amber-50 text-amber-700 border-amber-200/60'
+                        }`}>
                           {c.status}
                         </span>
                       </td>
-                      <td className="px-4 py-3">
-                        <div className="flex items-center gap-1">
-                          <button onClick={() => setViewing(c)} className="p-1.5 rounded hover:bg-surface-100 text-surface-500 hover:text-primary-600 transition-colors" title="View" aria-label="View complaint">
+                      <td className="px-5 py-4">
+                        <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
+                          <button onClick={() => setViewing(c)} className="p-1.5 rounded-lg hover:bg-primary-50 text-surface-400 hover:text-primary-600 transition-colors" title="View" aria-label="View complaint">
                             <Eye size={16} />
                           </button>
-                          <button onClick={() => { setResponding(c); setResponse(c.adminResponse || ''); }} className="p-1.5 rounded hover:bg-surface-100 text-surface-500 hover:text-blue-600 transition-colors" title="Respond" aria-label="Respond to complaint">
+                          <button onClick={() => { setResponding(c); setResponse(c.adminResponse || ''); }} className="p-1.5 rounded-lg hover:bg-blue-50 text-surface-400 hover:text-blue-600 transition-colors" title="Respond" aria-label="Respond to complaint">
                             <MessageSquare size={16} />
                           </button>
-                          <button onClick={() => { setChangingStatus(c); setNewStatus(c.status); }} className="p-1.5 rounded hover:bg-surface-100 text-surface-500 hover:text-amber-600 transition-colors" title="Change Status" aria-label="Change status">
+                          <button onClick={() => { setChangingStatus(c); setNewStatus(c.status); }} className="p-1.5 rounded-lg hover:bg-amber-50 text-surface-400 hover:text-amber-600 transition-colors" title="Change Status" aria-label="Change status">
                             <RefreshCw size={16} />
                           </button>
-                          <button onClick={() => setDeleting(c)} className="p-1.5 rounded hover:bg-surface-100 text-surface-500 hover:text-red-600 transition-colors" title="Delete" aria-label="Delete complaint">
+                          <button onClick={() => setDeleting(c)} className="p-1.5 rounded-lg hover:bg-red-50 text-surface-400 hover:text-red-600 transition-colors" title="Delete" aria-label="Delete complaint">
                             <Trash2 size={16} />
                           </button>
                         </div>

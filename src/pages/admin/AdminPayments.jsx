@@ -37,49 +37,49 @@ export default function AdminPayments() {
 
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full min-w-0">
-        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
-          <div className="bg-blue-50 text-blue-600 p-3 rounded-lg shrink-0">
-            <Receipt size={22} />
-          </div>
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
-            <p className="text-sm text-surface-500 mb-1 truncate">Total Expected</p>
-            <p className="text-xl font-semibold text-surface-900">{formatCurrency(totalExpected)}</p>
+            <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Total Expected</p>
+            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalExpected)}</p>
+          </div>
+          <div className="bg-blue-50 text-blue-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <Receipt size={20} />
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
-          <div className="bg-emerald-50 text-emerald-600 p-3 rounded-lg shrink-0">
-            <IndianRupee size={22} />
-          </div>
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
-            <p className="text-sm text-surface-500 mb-1 truncate">Collected</p>
-            <p className="text-xl font-semibold text-surface-900">{formatCurrency(totalCollected)}</p>
+            <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Collected</p>
+            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{formatCurrency(totalCollected)}</p>
+          </div>
+          <div className="bg-emerald-50 text-emerald-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <IndianRupee size={20} />
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
-          <div className="bg-amber-50 text-amber-600 p-3 rounded-lg shrink-0">
-            <Bell size={22} />
-          </div>
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
-            <p className="text-sm text-surface-500 mb-1 truncate">Pending</p>
-            <p className="text-xl font-semibold text-surface-900">{pendingCount}</p>
+            <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Pending</p>
+            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{pendingCount}</p>
+          </div>
+          <div className="bg-amber-50 text-amber-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <Bell size={20} />
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
-          <div className="bg-purple-50 text-purple-600 p-3 rounded-lg shrink-0">
-            <IndianRupee size={22} />
-          </div>
+        <div className="bg-white rounded-2xl shadow-sm border border-surface-200 p-5 flex items-start justify-between min-w-0 group hover:shadow-md transition-all">
           <div className="min-w-0">
-            <p className="text-sm text-surface-500 mb-1 truncate">Collection Rate</p>
-            <p className="text-xl font-semibold text-surface-900">{collectionRate}%</p>
+            <p className="text-[13px] font-bold text-surface-500 uppercase tracking-wide mb-1 truncate">Collection Rate</p>
+            <p className="text-2xl font-bold text-surface-900 truncate tracking-tight">{collectionRate}%</p>
+          </div>
+          <div className="bg-purple-50 text-purple-600 p-3 rounded-xl shrink-0 group-hover:scale-110 transition-transform">
+            <IndianRupee size={20} />
           </div>
         </div>
       </div>
 
       {/* Member Table Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-surface-200 overflow-hidden min-w-0">
+      <div className="bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden min-w-0">
         <div className="p-4 border-b border-surface-200 flex flex-col sm:flex-row gap-4 justify-between items-center bg-surface-50">
           <div className="relative w-full sm:w-64">
             <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
@@ -88,19 +88,19 @@ export default function AdminPayments() {
               placeholder="Search resident or flat..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg border border-surface-200 focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-surface-200 focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 text-sm transition-all bg-white"
             />
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex gap-1.5 p-1 bg-surface-100/50 rounded-xl border border-surface-200/50">
             {['All', 'Paid', 'Pending'].map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-1.5 rounded-lg text-sm font-bold transition-all ${
                   filter === f
-                    ? 'bg-primary-50 text-primary-700'
-                    : 'text-surface-600 hover:bg-surface-100'
+                    ? 'bg-white text-surface-900 shadow-sm border border-surface-200'
+                    : 'text-surface-500 hover:text-surface-700 hover:bg-surface-100/50 border border-transparent'
                 }`}
               >
                 {f}
@@ -112,52 +112,54 @@ export default function AdminPayments() {
         <div className="overflow-x-auto w-full min-w-0">
           <table className="w-full text-sm text-left border-collapse min-w-[800px]">
             <thead>
-              <tr className="bg-surface-50 text-surface-600 border-b border-surface-200">
-                <th className="px-4 py-3 font-medium">Resident</th>
-                <th className="px-4 py-3 font-medium">Flat</th>
-                <th className="px-4 py-3 font-medium">Monthly Fee</th>
-                <th className="px-4 py-3 font-medium">Due Date</th>
-                <th className="px-4 py-3 font-medium">Payment Status</th>
-                <th className="px-4 py-3 font-medium">Payment Date</th>
-                <th className="px-4 py-3 font-medium text-right">Action</th>
+              <tr className="bg-surface-50 border-b border-surface-200 text-surface-500 text-[11px] uppercase tracking-wider font-bold">
+                <th className="px-5 py-4">Resident</th>
+                <th className="px-5 py-4">Flat</th>
+                <th className="px-5 py-4">Monthly Fee</th>
+                <th className="px-5 py-4">Due Date</th>
+                <th className="px-5 py-4">Payment Status</th>
+                <th className="px-5 py-4">Payment Date</th>
+                <th className="px-5 py-4 text-right">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-surface-100">
               {filteredResidents.length > 0 ? (
                 filteredResidents.map((r) => (
-                  <tr key={r.id} className="hover:bg-surface-50 transition-colors">
-                    <td className="px-4 py-3 font-medium text-surface-900">{r.name}</td>
-                    <td className="px-4 py-3 text-surface-600 font-mono">{r.flat}</td>
-                    <td className="px-4 py-3 text-surface-700">{formatCurrency(CURRENT_DUE.amount)}</td>
-                    <td className="px-4 py-3 text-surface-600">{formatDate(CURRENT_DUE.dueDate)}</td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${r.paymentStatus === 'Paid' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}`}>
+                  <tr key={r.id} className="hover:bg-surface-50 transition-colors group">
+                    <td className="px-5 py-4 font-bold text-surface-900">{r.name}</td>
+                    <td className="px-5 py-4 text-surface-500">
+                      <span className="bg-surface-100 border border-surface-200 px-2 py-0.5 rounded-md font-mono text-xs font-bold">{r.flat}</span>
+                    </td>
+                    <td className="px-5 py-4 font-medium text-surface-700">{formatCurrency(CURRENT_DUE.amount)}</td>
+                    <td className="px-5 py-4 text-surface-500 font-medium">{formatDate(CURRENT_DUE.dueDate)}</td>
+                    <td className="px-5 py-4">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${r.paymentStatus === 'Paid' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' : 'bg-amber-50 text-amber-700 border-amber-200/60'}`}>
                         {r.paymentStatus}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-surface-500 text-xs">
+                    <td className="px-5 py-4 text-surface-500 text-xs">
                       {r.paymentStatus === 'Paid' ? (
                         <>
-                          <div className="font-medium">{r.paidDate ? formatDate(r.paidDate) : 'Recent'}</div>
-                          {r.transactionId && <div className="text-[10px] font-mono mt-0.5">{r.transactionId}</div>}
+                          <div className="font-bold">{r.paidDate ? formatDate(r.paidDate) : 'Recent'}</div>
+                          {r.transactionId && <div className="text-[10px] font-mono mt-0.5 text-surface-400">{r.transactionId}</div>}
                         </>
                       ) : (
                         '—'
                       )}
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-5 py-4 text-right">
                       {r.paymentStatus === 'Pending' && (
                         <button
                           onClick={() => handleSendReminder(r.id, r.name)}
                           disabled={r.reminderSent}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors ${
                             r.reminderSent
-                              ? 'bg-surface-100 text-surface-400 cursor-not-allowed'
-                              : 'bg-primary-50 text-primary-700 hover:bg-primary-100'
+                              ? 'bg-surface-100 text-surface-400 cursor-not-allowed opacity-100'
+                              : 'bg-primary-50 text-primary-600 hover:bg-primary-100 opacity-0 group-hover:opacity-100 focus:opacity-100'
                           }`}
                         >
-                          <Bell size={14} />
-                          {r.reminderSent ? 'Reminder Sent' : 'Send Reminder'}
+                          <Bell size={13} />
+                          {r.reminderSent ? 'Sent' : 'Remind'}
                         </button>
                       )}
                     </td>
@@ -165,7 +167,7 @@ export default function AdminPayments() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-surface-500">
+                  <td colSpan={7} className="px-5 py-8 text-center text-sm font-medium text-surface-500">
                     No residents found matching the criteria.
                   </td>
                 </tr>
@@ -173,7 +175,7 @@ export default function AdminPayments() {
             </tbody>
           </table>
         </div>
-        <div className="p-3 border-t border-surface-200 bg-surface-50 text-xs text-surface-500 text-center">
+        <div className="p-3 border-t border-surface-200 bg-surface-50 text-[11px] font-bold uppercase tracking-wider text-surface-400 text-center">
           {filteredResidents.length} {filteredResidents.length === 1 ? 'record' : 'records'} found
         </div>
       </div>

@@ -40,29 +40,29 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold transition-all duration-200 group ${
       isActive
-        ? 'bg-primary-50 text-primary-700 font-semibold shadow-sm'
-        : 'text-surface-600 font-medium hover:bg-surface-100 hover:text-surface-900'
+        ? 'bg-primary-50 text-primary-700 shadow-sm border border-primary-100/50'
+        : 'text-surface-500 hover:bg-surface-100 hover:text-surface-900 border border-transparent'
     }`;
 
   const content = (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white relative">
       {/* Logo */}
-      <div className="px-4 py-5 border-b border-surface-200 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
-            <LayoutDashboard size={16} className="text-white" />
+      <div className="px-5 py-6 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-gradient-to-br from-primary-600 to-primary-700 rounded-xl flex items-center justify-center shadow-md border border-primary-800/20">
+            <LayoutDashboard size={18} className="text-white drop-shadow-sm" />
           </div>
           <div>
-            <h1 className="text-base font-bold text-surface-900 leading-tight">SocietyHub</h1>
-            <p className="text-[10px] text-surface-400 leading-tight">by VPSA Solutions</p>
+            <h1 className="text-xl font-black text-surface-900 tracking-tight leading-none">SocietyHub</h1>
+            <p className="text-[9px] font-bold text-surface-400 mt-1.5 uppercase tracking-widest">Workspace</p>
           </div>
         </div>
         {/* Close on mobile */}
         <button
           onClick={onClose}
-          className="lg:hidden p-1 rounded-md hover:bg-surface-100 text-surface-500"
+          className="lg:hidden p-1.5 rounded-xl hover:bg-surface-100 text-surface-500 transition-colors"
           aria-label="Close menu"
         >
           <X size={20} />
@@ -70,35 +70,44 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 p-3 space-y-1" aria-label="Main navigation">
+      <nav className="flex-1 px-3 space-y-1.5 overflow-y-auto" aria-label="Main navigation">
+        <div className="px-3 mb-3 mt-2">
+          <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest">
+            {variant === 'admin' ? 'Committee Menu' : 'Resident Menu'}
+          </p>
+        </div>
         {links.map((link) => (
           <NavLink key={link.to} to={link.to} end className={linkClass} onClick={onClose}>
-            <link.icon size={18} />
-            {link.label}
+            {({ isActive }) => (
+              <>
+                <link.icon size={18} className={isActive ? 'text-primary-600 drop-shadow-sm' : 'text-surface-400 group-hover:text-surface-600 transition-colors'} />
+                {link.label}
+              </>
+            )}
           </NavLink>
         ))}
+        
         {variant === 'resident' && (
-          <NavLink to="/admin" className={linkClass} onClick={onClose}>
-            <ShieldCheck size={18} />
-            <span>Committee</span>
-            <span className="ml-auto text-[10px] bg-surface-100 text-surface-500 px-1.5 py-0.5 rounded">Switch</span>
-          </NavLink>
+          <div className="pt-4 mt-4 border-t border-surface-100">
+            <NavLink to="/admin" className={linkClass} onClick={onClose}>
+              <ShieldCheck size={18} className="text-surface-400 group-hover:text-surface-600 transition-colors" />
+              <span>Committee Area</span>
+            </NavLink>
+          </div>
         )}
       </nav>
 
       {/* Profile & Logout */}
-      <div className="p-4 border-t border-surface-200 bg-surface-50">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold shrink-0">
-              {variant === 'admin' ? 'C' : 'R'}
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-semibold text-surface-900 truncate">
-                {variant === 'admin' ? 'Committee Member' : 'Resident'}
-              </p>
-              <p className="text-xs text-surface-500 truncate">Demo Account</p>
-            </div>
+      <div className="p-4 m-4 mt-auto bg-surface-50 rounded-2xl border border-surface-200">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white border border-surface-200 flex items-center justify-center text-primary-700 font-bold shrink-0 shadow-sm text-sm">
+            {variant === 'admin' ? 'C' : 'R'}
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-bold text-surface-900 truncate tracking-tight">
+              {variant === 'admin' ? 'Committee' : 'Resident'}
+            </p>
+            <p className="text-[11px] font-medium text-surface-500 truncate">Demo Access</p>
           </div>
           <button
             onClick={handleLogout}
