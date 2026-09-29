@@ -27,7 +27,7 @@ export default function Payments() {
       </div>
 
       {/* Current due card */}
-      <div className="bg-white rounded-lg border border-surface-200 p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-start gap-4">
             <div className={`p-3 rounded-lg shrink-0 ${currentDuePaid ? 'bg-emerald-50' : 'bg-amber-50'}`}>
@@ -78,7 +78,7 @@ export default function Payments() {
         {payments.length > 0 ? (
           <>
             {/* Desktop table */}
-            <div className="hidden md:block bg-white rounded-lg border border-surface-200 overflow-hidden">
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-50 text-surface-600 text-left">
@@ -118,7 +118,7 @@ export default function Payments() {
             {/* Mobile cards */}
             <div className="md:hidden space-y-3">
               {payments.map((p) => (
-                <div key={p.id} className="bg-white rounded-lg border border-surface-200 p-4">
+                <div key={p.id} className="bg-white rounded-xl shadow-sm border border-surface-200 p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="font-medium text-surface-800">{p.month}</p>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(p.status)}`}>

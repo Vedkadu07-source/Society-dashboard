@@ -11,15 +11,15 @@ export function ResidentLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen bg-surface-50">
+    <div className="min-h-screen flex bg-surface-50">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         variant="resident"
       />
-      <div className="lg:pl-60">
+      <div className="flex-1 min-w-0 flex flex-col">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="p-4 lg:p-6 max-w-7xl mx-auto">
+        <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
           <Outlet />
         </main>
       </div>
@@ -34,15 +34,15 @@ export function AdminLayout() {
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') {
     return (
-      <div className="min-h-screen bg-surface-50">
+      <div className="min-h-screen flex bg-surface-50">
         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
           variant="resident"
         />
-        <div className="lg:pl-60">
+        <div className="flex-1 min-w-0 flex flex-col">
           <Header onMenuClick={() => setSidebarOpen(true)} />
-          <main className="p-4 lg:p-6 max-w-7xl mx-auto">
+          <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
             <div className="flex flex-col items-center justify-center py-20 text-center">
               <div className="bg-red-50 p-4 rounded-full mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -61,15 +61,15 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-50">
+    <div className="min-h-screen flex bg-surface-50">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
         variant="admin"
       />
-      <div className="lg:pl-60">
+      <div className="flex-1 min-w-0 flex flex-col">
         <Header onMenuClick={() => setSidebarOpen(true)} />
-        <main className="p-4 lg:p-6 max-w-7xl mx-auto">
+        <main className="w-full min-w-0 p-4 lg:p-6 max-w-7xl mx-auto">
           <Outlet />
         </main>
       </div>

@@ -38,7 +38,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
         <StatCard
           icon={IndianRupee}
           label="Monthly Maintenance"
@@ -83,7 +83,7 @@ export default function Dashboard() {
         </div>
 
         {recent.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {recent.map((c) => (
               <ComplaintCard key={c.id} complaint={c} onClick={() => setSelected(c)} />
             ))}
@@ -95,7 +95,7 @@ export default function Dashboard() {
             <p className="text-sm text-surface-500 mb-4">You haven't submitted any complaints yet.</p>
             <Link
               to="/complaints"
-              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200"
             >
               Submit your first complaint
             </Link>

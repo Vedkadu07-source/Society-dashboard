@@ -139,7 +139,7 @@ export default function Complaints() {
       {filtered.length > 0 ? (
         <>
           {/* Table – hidden on mobile */}
-          <div className="hidden md:block bg-white rounded-lg border border-surface-200 overflow-hidden">
+          <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>

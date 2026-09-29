@@ -52,51 +52,75 @@ export default function PaymentModal({ open, onClose }) {
 
   return (
     <Modal open={open} onClose={handleClose} title="Pay Maintenance Fee">
+      {/* Progress Indicator */}
+      <div className="flex items-center justify-between mb-6 relative">
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-0.5 bg-surface-200 z-0" />
+        <div className="absolute left-0 top-1/2 -translate-y-1/2 h-0.5 bg-primary-600 z-0 transition-all duration-300" 
+             style={{ width: step === 'select' ? '0%' : step === 'processing' ? '50%' : '100%' }} />
+        
+        {['select', 'processing', 'success'].map((s, i) => {
+          const isActive = step === s || (step === 'success' && i < 2) || (step === 'processing' && i === 0);
+          const isCurrent = step === s;
+          return (
+            <div key={s} className="relative z-10 flex flex-col items-center gap-1 bg-white px-2">
+              <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${
+                isActive ? 'bg-primary-600 text-white shadow-sm' : 'bg-surface-100 text-surface-400'
+              } ${isCurrent ? 'ring-4 ring-primary-50' : ''}`}>
+                {i + 1}
+              </div>
+              <span className={`text-[10px] font-medium absolute -bottom-4 w-16 text-center ${isActive ? 'text-primary-700' : 'text-surface-400'}`}>
+                {i === 0 ? 'Review' : i === 1 ? 'Payment' : 'Complete'}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+
       {step === 'select' && (
-        <div className="space-y-5">
+        <div className="space-y-5 mt-4">
           {/* Amount summary */}
-          <div className="bg-surface-50 rounded-lg p-4 border border-surface-200">
-            <p className="text-sm text-surface-500 mb-1">Maintenance Fee — {CURRENT_DUE.month}</p>
-            <p className="text-2xl font-bold text-surface-900">{formatCurrency(CURRENT_DUE.amount)}</p>
-            <p className="text-xs text-surface-400 mt-1">Due: {formatDate(CURRENT_DUE.dueDate)}</p>
+          <div className="bg-surface-50 rounded-xl p-5 border border-surface-200 text-center">
+            <p className="text-sm font-medium text-surface-500 mb-1">Maintenance Fee — {CURRENT_DUE.month}</p>
+            <p className="text-3xl font-bold text-surface-900">{formatCurrency(CURRENT_DUE.amount)}</p>
+            <p className="text-xs font-medium text-surface-400 mt-2">Due: {formatDate(CURRENT_DUE.dueDate)}</p>
           </div>
 
           {/* Method selection */}
           <div>
             <p className="text-sm font-medium text-surface-700 mb-3">Select Payment Method</p>
-            <div className="space-y-2">
+            <div className="space-y-3">
               {METHODS.map((m) => (
                 <button
                   key={m.id}
                   type="button"
                   onClick={() => { setMethod(m.id); setError(''); }}
-                  className={`w-full flex items-center gap-3 p-3 rounded-lg border transition-all text-left ${
+                  className={`w-full flex items-center gap-3 p-4 rounded-xl border transition-all duration-200 text-left focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-1 ${
                     method === m.id
-                      ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-500'
-                      : 'border-surface-200 hover:border-surface-300 bg-white'
+                      ? 'border-primary-500 bg-primary-50 ring-1 ring-primary-500 shadow-sm'
+                      : 'border-surface-200 hover:border-primary-300 hover:shadow-sm bg-white hover:-translate-y-0.5'
                   }`}
                 >
-                  <m.icon size={20} className={method === m.id ? 'text-primary-600' : 'text-surface-400'} />
+                  <m.icon size={22} className={method === m.id ? 'text-primary-600' : 'text-surface-400'} />
                   <div>
-                    <p className={`text-sm font-medium ${method === m.id ? 'text-primary-700' : 'text-surface-700'}`}>{m.label}</p>
-                    <p className="text-xs text-surface-400">{m.desc}</p>
+                    <p className={`text-sm font-medium ${method === m.id ? 'text-primary-700' : 'text-surface-800'}`}>{m.label}</p>
+                    <p className="text-xs font-medium text-surface-400 mt-0.5">{m.desc}</p>
                   </div>
                 </button>
               ))}
             </div>
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
+          {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
 
           {/* Demo notice */}
-          <p className="text-xs text-surface-400 text-center">
+          <p className="text-xs font-medium text-surface-400 text-center">
             This is a simulated demo payment. No real money will be charged.
           </p>
 
           {/* Pay button */}
           <button
             onClick={handlePay}
-            className="w-full bg-primary-600 hover:bg-primary-700 text-white font-medium py-2.5 rounded-lg transition-colors"
+            className="w-full bg-primary-600 hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 text-white font-medium py-3 rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
           >
             Pay {formatCurrency(CURRENT_DUE.amount)}
           </button>

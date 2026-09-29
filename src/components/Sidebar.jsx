@@ -37,10 +37,10 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
   };
 
   const linkClass = ({ isActive }) =>
-    `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+    `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
       isActive
-        ? 'bg-primary-50 text-primary-700'
-        : 'text-surface-600 hover:bg-surface-100 hover:text-surface-900'
+        ? 'bg-primary-50 text-primary-700 font-semibold shadow-sm'
+        : 'text-surface-600 font-medium hover:bg-surface-100 hover:text-surface-900'
     }`;
 
   const content = (
@@ -83,15 +83,28 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
         )}
       </nav>
 
-      {/* Logout */}
-      <div className="p-3 border-t border-surface-200">
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-surface-600 hover:bg-red-50 hover:text-red-600 transition-colors w-full"
-        >
-          <LogOut size={18} />
-          Logout
-        </button>
+      {/* Profile & Logout */}
+      <div className="p-4 border-t border-surface-200 bg-surface-50">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold shrink-0">
+              {variant === 'admin' ? 'A' : 'R'}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-surface-900 truncate">
+                {variant === 'admin' ? 'Administrator' : 'Resident'}
+              </p>
+              <p className="text-xs text-surface-500 truncate">Demo Account</p>
+            </div>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="p-2 text-surface-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors shrink-0"
+            title="Logout"
+          >
+            <LogOut size={18} />
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -99,7 +112,7 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-60 lg:fixed lg:inset-y-0 bg-white border-r border-surface-200 z-30">
+      <aside className="hidden lg:flex lg:flex-col lg:w-60 lg:sticky lg:top-0 lg:h-screen bg-white border-r border-surface-200 z-30 shrink-0">
         {content}
       </aside>
 

@@ -119,7 +119,7 @@ export default function AdminComplaints() {
       {/* Table */}
       {filtered.length > 0 ? (
         <>
-          <div className="hidden lg:block bg-white rounded-lg border border-surface-200 overflow-hidden">
+          <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -174,7 +174,7 @@ export default function AdminComplaints() {
           {/* Mobile cards */}
           <div className="lg:hidden space-y-3">
             {filtered.map((c) => (
-              <div key={c.id} className="bg-white rounded-lg border border-surface-200 p-4 space-y-3">
+              <div key={c.id} className="bg-white rounded-xl shadow-sm border border-surface-200 p-4 space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="font-medium text-surface-900">{c.title}</p>

@@ -15,7 +15,7 @@ export default function AdminResidents() {
       {residents.length > 0 ? (
         <>
           {/* Desktop table */}
-          <div className="hidden md:block bg-white rounded-lg border border-surface-200 overflow-hidden">
+          <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-surface-50 text-surface-600 text-left">
@@ -47,7 +47,7 @@ export default function AdminResidents() {
           {/* Mobile cards */}
           <div className="md:hidden space-y-3">
             {residents.map((r) => (
-              <div key={r.id} className="bg-white rounded-lg border border-surface-200 p-4">
+              <div key={r.id} className="bg-white rounded-xl shadow-sm border border-surface-200 p-4">
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-medium text-surface-900">{r.name}</p>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(r.paymentStatus)}`}>

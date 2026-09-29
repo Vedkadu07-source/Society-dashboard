@@ -17,7 +17,7 @@ export default function AdminPayments() {
 
       {/* Summary */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg border border-surface-200 p-5 flex items-start gap-4">
+        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
           <div className="bg-emerald-50 text-emerald-600 p-3 rounded-lg">
             <IndianRupee size={22} />
           </div>
@@ -26,7 +26,7 @@ export default function AdminPayments() {
             <p className="text-xl font-semibold text-surface-900">{formatCurrency(totalCollected)}</p>
           </div>
         </div>
-        <div className="bg-white rounded-lg border border-surface-200 p-5 flex items-start gap-4">
+        <div className="bg-white rounded-xl shadow-sm border border-surface-200 p-5 flex items-start gap-4">
           <div className="bg-amber-50 text-amber-600 p-3 rounded-lg">
             <Receipt size={22} />
           </div>
@@ -43,7 +43,7 @@ export default function AdminPayments() {
 
         {payments.length > 0 ? (
           <>
-            <div className="hidden md:block bg-white rounded-lg border border-surface-200 overflow-hidden">
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-surface-200 overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-surface-50 text-surface-600 text-left">
@@ -74,7 +74,7 @@ export default function AdminPayments() {
 
             <div className="md:hidden space-y-3">
               {payments.map((p) => (
-                <div key={p.id} className="bg-white rounded-lg border border-surface-200 p-4">
+                <div key={p.id} className="bg-white rounded-xl shadow-sm border border-surface-200 p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="font-medium text-surface-800">{p.month}</p>
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusColor(p.status)}`}>
