@@ -11,7 +11,7 @@ export function ResidentLayout() {
   if (!user) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen flex bg-surface-50">
+    <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -34,7 +34,7 @@ export function AdminLayout() {
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== 'admin') {
     return (
-      <div className="min-h-screen flex bg-surface-50">
+      <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
         <Sidebar
           open={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
@@ -61,7 +61,7 @@ export function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen flex bg-surface-50">
+    <div className="min-h-screen flex bg-surface-50 w-full min-w-0 max-w-full">
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

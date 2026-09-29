@@ -38,7 +38,7 @@ export default function Dashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 w-full min-w-0">
         <StatCard
           icon={IndianRupee}
           label="Monthly Maintenance"
@@ -83,7 +83,7 @@ export default function Dashboard() {
         </div>
 
         {recent.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full min-w-0">
             {recent.map((c) => (
               <ComplaintCard key={c.id} complaint={c} onClick={() => setSelected(c)} />
             ))}

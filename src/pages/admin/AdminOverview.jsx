@@ -26,7 +26,7 @@ export default function AdminOverview() {
         <p className="text-surface-500 mt-0.5">Society Management Overview</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full min-w-0">
         <StatCard
           icon={Users}
           label="Total Residents"
