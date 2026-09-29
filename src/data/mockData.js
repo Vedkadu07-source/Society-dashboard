@@ -14,12 +14,12 @@ export const DEMO_USERS = [
   },
   {
     id: 'USR-002',
-    name: 'Admin User',
-    email: 'admin@societyhub.demo',
-    password: 'admin123',
+    name: 'Committee Member',
+    email: 'committee@societyhub.demo',
+    password: 'committee123',
     phone: '9988776655',
-    flat: 'Admin',
-    role: 'admin',
+    flat: 'Committee Room',
+    role: 'committee',
   },
 ];
 
@@ -181,3 +181,10 @@ export const CURRENT_DUE = {
   amount: 2500,
   dueDate: '2026-10-10',
 };
+
+export const SEED_NOTICES = [
+  { id: 'NOT-1001', title: 'Water Tank Cleaning', description: 'The society water tanks will be cleaned on 2nd Oct. Expect water supply interruption from 10 AM to 4 PM.', category: 'Maintenance', date: '2026-09-30', important: true, createdBy: 'Committee' },
+  { id: 'NOT-1002', title: 'Diwali Society Meeting', description: 'A general body meeting will be held on 5th Oct to discuss Diwali celebration plans and budget.', category: 'Meeting', date: '2026-09-29', important: false, createdBy: 'Committee' },
+  { id: 'NOT-1003', title: 'Lift Maintenance', description: 'Monthly lift maintenance for Block A and B will take place on 8th Oct. Please plan accordingly.', category: 'Maintenance', date: '2026-09-28', important: false, createdBy: 'Committee' }
+];
+

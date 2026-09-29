@@ -7,10 +7,12 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Complaints from './pages/Complaints';
 import Payments from './pages/Payments';
+import Notices from './pages/Notices';
 import AdminOverview from './pages/admin/AdminOverview';
 import AdminComplaints from './pages/admin/AdminComplaints';
 import AdminResidents from './pages/admin/AdminResidents';
 import AdminPayments from './pages/admin/AdminPayments';
+import AdminNotices from './pages/admin/AdminNotices';
 
 export default function App() {
   return (
@@ -27,14 +29,16 @@ export default function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/complaints" element={<Complaints />} />
             <Route path="/payments" element={<Payments />} />
+            <Route path="/notices" element={<Notices />} />
           </Route>
 
-          {/* Admin routes */}
+          {/* Committee routes */}
           <Route element={<AdminLayout />}>
             <Route path="/admin" element={<AdminOverview />} />
             <Route path="/admin/complaints" element={<AdminComplaints />} />
             <Route path="/admin/residents" element={<AdminResidents />} />
             <Route path="/admin/payments" element={<AdminPayments />} />
+            <Route path="/admin/notices" element={<AdminNotices />} />
           </Route>
 
           {/* Catch all */}
@@ -44,3 +48,4 @@ export default function App() {
     </BrowserRouter>
   );
 }
+

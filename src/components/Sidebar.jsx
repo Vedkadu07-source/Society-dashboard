@@ -9,19 +9,22 @@ import {
   X,
   Users,
   BarChart3,
+  Bell
 } from 'lucide-react';
 
 const residentLinks = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/complaints', label: 'Complaints', icon: MessageSquareText },
   { to: '/payments', label: 'Payments', icon: CreditCard },
+  { to: '/notices', label: 'Notices', icon: Bell },
 ];
 
 const adminLinks = [
   { to: '/admin', label: 'Overview', icon: BarChart3 },
   { to: '/admin/complaints', label: 'Complaints', icon: MessageSquareText },
   { to: '/admin/residents', label: 'Residents', icon: Users },
-  { to: '/admin/payments', label: 'Payments', icon: CreditCard },
+  { to: '/admin/payments', label: 'Maintenance', icon: CreditCard },
+  { to: '/admin/notices', label: 'Notices', icon: Bell },
 ];
 
 export default function Sidebar({ open, onClose, variant = 'resident' }) {
@@ -77,8 +80,8 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
         {variant === 'resident' && (
           <NavLink to="/admin" className={linkClass} onClick={onClose}>
             <ShieldCheck size={18} />
-            <span>Admin</span>
-            <span className="ml-auto text-[10px] bg-surface-100 text-surface-500 px-1.5 py-0.5 rounded">Admin</span>
+            <span>Committee</span>
+            <span className="ml-auto text-[10px] bg-surface-100 text-surface-500 px-1.5 py-0.5 rounded">Switch</span>
           </NavLink>
         )}
       </nav>
@@ -88,11 +91,11 @@ export default function Sidebar({ open, onClose, variant = 'resident' }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3 overflow-hidden">
             <div className="w-9 h-9 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold shrink-0">
-              {variant === 'admin' ? 'A' : 'R'}
+              {variant === 'admin' ? 'C' : 'R'}
             </div>
             <div className="min-w-0">
               <p className="text-sm font-semibold text-surface-900 truncate">
-                {variant === 'admin' ? 'Administrator' : 'Resident'}
+                {variant === 'admin' ? 'Committee Member' : 'Resident'}
               </p>
               <p className="text-xs text-surface-500 truncate">Demo Account</p>
             </div>

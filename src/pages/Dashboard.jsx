@@ -4,6 +4,9 @@ import { useApp } from '../context/AppContext';
 import StatCard from '../components/StatCard';
 import { ComplaintCard } from '../components/ComplaintCard';
 import ComplaintModal from '../components/ComplaintModal';
+import PaymentModal from '../components/PaymentModal';
+import SocietyQRCode from '../components/SocietyQRCode';
+import NoticeCard from '../components/NoticeCard';
 import { getGreeting, formatCurrency, formatDate } from '../utils/helpers';
 import { CURRENT_DUE } from '../data/mockData';
 import {
@@ -13,19 +16,29 @@ import {
   CalendarDays,
   ArrowRight,
   FileQuestion,
+  CreditCard,
+  Bell
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user, complaints, currentDuePaid } = useApp();
-  const [selected, setSelected] = useState(null);
+  const { user, complaints, currentDuePaid, notices, payments } = useApp();
+  const [selectedComplaint, setSelectedComplaint] = useState(null);
+  const [payModalOpen, setPayModalOpen] = useState(false);
 
-  // Only show the logged-in resident's complaints
+  // Complaints
   const myComplaints = complaints.filter(
     (c) => c.residentId === user?.id || c.resident === user?.name,
   );
   const openCount = myComplaints.filter((c) => c.status !== 'Resolved' && c.status !== 'Rejected').length;
   const resolvedCount = myComplaints.filter((c) => c.status === 'Resolved').length;
-  const recent = myComplaints.slice(0, 3);
+  const recentComplaints = myComplaints.slice(0, 3);
+  
+  // Notices
+  const recentNotices = notices.slice(0, 3);
+
+  // Payment info
+  const myPayments = payments.filter(p => p.residentId === user?.id);
+  const lastPayment = myPayments.length > 0 ? myPayments[0] : null;
 
   return (
     <div className="space-y-6">
@@ -70,44 +83,128 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* Recent complaints */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold text-surface-900">Recent Complaints</h2>
-          <Link
-            to="/complaints"
-            className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
-          >
-            View All <ArrowRight size={14} />
-          </Link>
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 w-full min-w-0">
+        {/* Main Content Column */}
+        <div className="xl:col-span-2 space-y-6 min-w-0">
+          
+          {/* Maintenance Section */}
+          <div className="bg-white rounded-xl border border-surface-200 p-6 shadow-sm min-w-0">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+              <div>
+                <h2 className="text-lg font-semibold text-surface-900">Maintenance Fee</h2>
+                <p className="text-sm text-surface-500">{CURRENT_DUE.month}</p>
+              </div>
+              <div className="text-left sm:text-right">
+                <p className="text-2xl font-bold text-surface-900">{formatCurrency(CURRENT_DUE.amount)}</p>
+                <p className="text-sm text-surface-500">Due: {formatDate(CURRENT_DUE.dueDate)}</p>
+              </div>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-surface-100">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-surface-600">Status:</span>
+                {currentDuePaid ? (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-100 text-emerald-700">
+                    Paid on {lastPayment ? formatDate(lastPayment.date) : 'Recently'}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold bg-amber-100 text-amber-700">
+                    Pending
+                  </span>
+                )}
+              </div>
+              
+              <div className="flex gap-3">
+                {currentDuePaid ? (
+                  <Link 
+                    to="/payments"
+                    className="inline-flex items-center gap-2 bg-surface-100 hover:bg-surface-200 text-surface-700 text-sm font-medium px-4 py-2 rounded-lg transition-colors"
+                  >
+                    View Receipt
+                  </Link>
+                ) : (
+                  <button 
+                    onClick={() => setPayModalOpen(true)}
+                    className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-5 py-2 rounded-lg transition-colors shadow-sm"
+                  >
+                    <CreditCard size={16} />
+                    Pay Maintenance
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Complaints */}
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-surface-900">Recent Complaints</h2>
+              <Link
+                to="/complaints"
+                className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+              >
+                View All <ArrowRight size={14} />
+              </Link>
+            </div>
+
+            {recentComplaints.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full min-w-0">
+                {recentComplaints.map((c) => (
+                  <ComplaintCard key={c.id} complaint={c} onClick={() => setSelectedComplaint(c)} />
+                ))}
+              </div>
+            ) : (
+              <div className="bg-white border border-surface-200 rounded-lg p-10 text-center">
+                <FileQuestion size={40} className="text-surface-300 mx-auto mb-3" />
+                <h3 className="font-medium text-surface-700 mb-1">No complaints found</h3>
+                <p className="text-sm text-surface-500 mb-4">You haven't submitted any complaints yet.</p>
+                <Link
+                  to="/complaints"
+                  className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all"
+                >
+                  Submit your first complaint
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
 
-        {recent.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 w-full min-w-0">
-            {recent.map((c) => (
-              <ComplaintCard key={c.id} complaint={c} onClick={() => setSelected(c)} />
-            ))}
+        {/* Sidebar Column */}
+        <div className="space-y-6 min-w-0">
+          <SocietyQRCode />
+          
+          <div className="bg-white rounded-xl border border-surface-200 shadow-sm min-w-0 overflow-hidden">
+            <div className="p-4 border-b border-surface-100 flex items-center justify-between bg-surface-50">
+              <h3 className="font-semibold text-surface-900 flex items-center gap-2">
+                <Bell size={18} className="text-primary-600" />
+                Latest Notices
+              </h3>
+            </div>
+            
+            <div className="p-4 space-y-3">
+              {recentNotices.length > 0 ? (
+                recentNotices.map((notice) => (
+                  <NoticeCard key={notice.id} notice={notice} />
+                ))
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-sm text-surface-500">No new society notices.</p>
+                </div>
+              )}
+            </div>
           </div>
-        ) : (
-          <div className="bg-white border border-surface-200 rounded-lg p-10 text-center">
-            <FileQuestion size={40} className="text-surface-300 mx-auto mb-3" />
-            <h3 className="font-medium text-surface-700 mb-1">No complaints found</h3>
-            <p className="text-sm text-surface-500 mb-4">You haven't submitted any complaints yet.</p>
-            <Link
-              to="/complaints"
-              className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 hover:shadow-lg hover:-translate-y-0.5 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-200"
-            >
-              Submit your first complaint
-            </Link>
-          </div>
-        )}
+        </div>
       </div>
 
-      {/* Complaint modal */}
       <ComplaintModal
-        open={!!selected}
-        onClose={() => setSelected(null)}
-        complaint={selected}
+        open={!!selectedComplaint}
+        onClose={() => setSelectedComplaint(null)}
+        complaint={selectedComplaint}
+      />
+      
+      <PaymentModal 
+        open={payModalOpen}
+        onClose={() => setPayModalOpen(false)}
       />
     </div>
   );

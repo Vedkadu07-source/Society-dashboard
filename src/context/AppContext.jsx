@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useCallback } from 'react';
 import storage from '../utils/storage';
-import { DEMO_USERS, SEED_COMPLAINTS, SEED_PAYMENTS, SEED_RESIDENTS } from '../data/mockData';
+import { DEMO_USERS, SEED_COMPLAINTS, SEED_PAYMENTS, SEED_RESIDENTS, SEED_NOTICES } from '../data/mockData';
 
 const AppContext = createContext(null);
 
@@ -13,6 +13,7 @@ function initSeedData() {
     storage.set('complaints', SEED_COMPLAINTS);
     storage.set('payments', SEED_PAYMENTS);
     storage.set('residents', SEED_RESIDENTS);
+    storage.set('notices', SEED_NOTICES);
     storage.set('seeded', true);
   }
 }
@@ -115,10 +116,47 @@ export function AppProvider({ children }) {
     storage.set('currentDuePaid', true);
     setPayments(list);
     setCurrentDuePaid(true);
-  }, []);
+
+    // Sync with resident
+    const resList = storage.get('residents', []);
+    const resIdx = resList.findIndex(r => r.id === user.id);
+    if (resIdx !== -1) {
+      resList[resIdx].paymentStatus = 'Paid';
+      resList[resIdx].paidDate = payment.date;
+      resList[resIdx].transactionId = payment.transactionId;
+      storage.set('residents', resList);
+      setResidents([...resList]);
+    }
+  }, [user]);
 
   // ----- Residents -----
-  const [residents] = useState(() => storage.get('residents', []));
+  const [residents, setResidents] = useState(() => storage.get('residents', []));
+  
+  const updateResident = useCallback((id, updates) => {
+    const list = storage.get('residents', []);
+    const idx = list.findIndex(r => r.id === id);
+    if (idx !== -1) {
+      list[idx] = { ...list[idx], ...updates };
+      storage.set('residents', list);
+      setResidents([...list]);
+    }
+  }, []);
+
+  // ----- Notices -----
+  const [notices, setNotices] = useState(() => storage.get('notices', []));
+  
+  const addNotice = useCallback((notice) => {
+    const list = storage.get('notices', []);
+    list.unshift(notice);
+    storage.set('notices', list);
+    setNotices(list);
+  }, []);
+
+  const deleteNotice = useCallback((id) => {
+    const list = storage.get('notices', []).filter((n) => n.id !== id);
+    storage.set('notices', list);
+    setNotices(list);
+  }, []);
 
   // ----- Toasts -----
   const [toasts, setToasts] = useState([]);
@@ -151,6 +189,10 @@ export function AppProvider({ children }) {
         currentDuePaid,
         addPayment,
         residents,
+        updateResident,
+        notices,
+        addNotice,
+        deleteNotice,
         toasts,
         addToast,
         removeToast,
