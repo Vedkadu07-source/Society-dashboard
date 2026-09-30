@@ -1,28 +1,27 @@
 import { useState, useMemo } from 'react';
 import { useApp } from '../context/AppContext';
-import { ComplaintCard } from '../components/ComplaintCard';
 import ComplaintModal from '../components/ComplaintModal';
-import { formatDate, generateId, todayISO, statusColor } from '../utils/helpers';
+import Modal from '../components/Modal';
+import { formatDate, generateId, todayISO } from '../utils/helpers';
 import { COMPLAINT_CATEGORIES } from '../data/mockData';
 import {
   Search,
-  Filter,
   Plus,
   X,
   Upload,
-  Send,
+  ArrowRight,
   FileQuestion,
+  Eye,
+  MessageSquare
 } from 'lucide-react';
 
 export default function Complaints() {
   const { user, complaints, addComplaint, addToast } = useApp();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
-  const [categoryFilter, setCategoryFilter] = useState('All');
   const [selected, setSelected] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  // Form state
   const [form, setForm] = useState({
     title: '', category: '', description: '', location: '', flat: user?.flat || '', file: null,
   });
@@ -38,10 +37,12 @@ export default function Complaints() {
         c.title.toLowerCase().includes(search.toLowerCase()) ||
         c.id.toLowerCase().includes(search.toLowerCase());
       const matchStatus = statusFilter === 'All' || c.status === statusFilter;
-      const matchCategory = categoryFilter === 'All' || c.category === categoryFilter;
-      return matchSearch && matchStatus && matchCategory;
+      return matchSearch && matchStatus;
     });
-  }, [myComplaints, search, statusFilter, categoryFilter]);
+  }, [myComplaints, search, statusFilter]);
+
+  const openCount = myComplaints.filter(c => c.status === 'Submitted' || c.status === 'In Progress').length;
+  const resolvedCount = myComplaints.filter(c => c.status === 'Resolved').length;
 
   const resetForm = () => {
     setForm({ title: '', category: '', description: '', location: '', flat: user?.flat || '', file: null });
@@ -80,103 +81,113 @@ export default function Complaints() {
   };
 
   return (
-    <div className="space-y-8 pb-10">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+    <div className="w-full min-w-0">
+      
+      {/* HEADER */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-surface-200 pb-6 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-surface-900 tracking-tight">Complaints</h1>
-          <p className="text-surface-500 mt-2 text-lg">Track and manage your submitted complaints.</p>
+          <h1 className="text-3xl font-light text-surface-900 tracking-tight mb-2">Service Requests</h1>
+          <p className="text-sm text-surface-500 max-w-md">Track, manage, and submit complaints to the society committee.</p>
         </div>
-        <button
-          onClick={() => setShowForm(true)}
-          className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-500 active:bg-primary-700 text-white text-sm font-bold px-6 py-3 rounded-xl transition-all shrink-0 shadow-sm"
-        >
-          <Plus size={18} />
-          New Complaint
-        </button>
-      </div>
 
-      {/* Filters */}
-      <div className="bg-white p-4 rounded-2xl border border-surface-200 shadow-sm flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-surface-400" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search complaints…"
-            className="w-full pl-11 pr-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all font-medium placeholder:text-surface-400"
-          />
-        </div>
-        <div className="flex gap-4">
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
-            aria-label="Filter by status"
-          >
-            <option value="All">All Status</option>
-            <option>Submitted</option>
-            <option>In Progress</option>
-            <option>Resolved</option>
-            <option>Rejected</option>
-          </select>
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="px-4 py-3 rounded-xl border border-surface-200 bg-surface-50 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all"
-            aria-label="Filter by category"
-          >
-            <option value="All">All Categories</option>
-            {COMPLAINT_CATEGORIES.map((c) => (
-              <option key={c}>{c}</option>
-            ))}
-          </select>
+        {/* Compact Metric Strip */}
+        <div className="flex items-center gap-6 text-sm">
+          <div>
+            <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-0.5">Total</p>
+            <p className="text-2xl font-light text-surface-900 tracking-tight">{myComplaints.length}</p>
+          </div>
+          <div className="w-px h-8 bg-surface-200" />
+          <div>
+            <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-0.5">Active</p>
+            <p className="text-2xl font-light text-amber-600 tracking-tight">{openCount}</p>
+          </div>
+          <div className="w-px h-8 bg-surface-200" />
+          <div>
+            <p className="text-[10px] font-bold text-surface-400 uppercase tracking-widest mb-0.5">Resolved</p>
+            <p className="text-2xl font-light text-emerald-600 tracking-tight">{resolvedCount}</p>
+          </div>
         </div>
       </div>
 
-      {/* Desktop table */}
-      {filtered.length > 0 ? (
-        <>
-          {/* Table – hidden on mobile */}
-          <div className="hidden md:block bg-white rounded-2xl shadow-sm border border-surface-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 xl:gap-12 mb-16">
+        
+        {/* MAIN COLUMN */}
+        <div className="lg:col-span-8 xl:col-span-9 space-y-8 min-w-0">
+          
+          {/* Filters & Actions Strip */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2 flex-1">
+              <div className="relative w-full max-w-xs">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-surface-400" />
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search requests..."
+                  className="w-full pl-9 pr-3 py-2 border-b border-surface-200 bg-transparent text-sm focus:outline-none focus:border-primary-500 transition-colors font-medium placeholder:text-surface-400"
+                />
+              </div>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="py-2 px-2 border-b border-surface-200 bg-transparent text-sm font-medium focus:outline-none focus:border-primary-500 transition-colors"
+              >
+                <option value="All">Status: All</option>
+                <option>Submitted</option>
+                <option>In Progress</option>
+                <option>Resolved</option>
+                <option>Rejected</option>
+              </select>
+            </div>
+            
+            {/* Quick Action */}
+            <div className="shrink-0">
+              <button 
+                onClick={() => setShowForm(true)}
+                className="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2.5 text-xs uppercase tracking-widest font-bold transition-colors flex items-center gap-2"
+              >
+                <Plus size={14} /> Report Issue
+              </button>
+            </div>
+          </div>
+
+          {/* DENSE OPERATIONS TABLE */}
+          {filtered.length > 0 ? (
+            <div className="w-full overflow-x-auto">
+              <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="bg-surface-50 border-b border-surface-200 text-surface-500 text-left text-[11px] uppercase tracking-wider font-bold">
-                    <th className="px-5 py-4">ID</th>
-                    <th className="px-5 py-4">Complaint</th>
-                    <th className="px-5 py-4">Category</th>
-                    <th className="px-5 py-4">Date</th>
-                    <th className="px-5 py-4">Status</th>
-                    <th className="px-5 py-4 text-right">Action</th>
+                  <tr className="border-b-2 border-surface-900 text-[10px] font-bold text-surface-500 uppercase tracking-widest">
+                    <th className="py-3 px-2 font-medium">ID</th>
+                    <th className="py-3 px-2 font-medium">Issue</th>
+                    <th className="py-3 px-2 font-medium">Date</th>
+                    <th className="py-3 px-2 font-medium">Status</th>
+                    <th className="py-3 px-2 font-medium text-right">Action</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-surface-100">
+                <tbody className="divide-y divide-surface-200">
                   {filtered.map((c) => (
-                    <tr key={c.id} className="hover:bg-surface-50 transition-colors group">
-                      <td className="px-5 py-4 font-medium text-surface-500 text-xs">{c.id}</td>
-                      <td className="px-5 py-4 text-surface-900 font-medium max-w-xs truncate">{c.title}</td>
-                      <td className="px-5 py-4 text-surface-600">
-                        <span className="bg-surface-100 border border-surface-200 px-2 py-0.5 rounded-full text-xs font-medium">{c.category}</span>
+                    <tr key={c.id} className="group hover:bg-surface-50/50 transition-colors">
+                      <td className="py-3 px-2">
+                        <div className="text-xs font-mono text-surface-900 mb-0.5">{c.id}</div>
                       </td>
-                      <td className="px-5 py-4 text-surface-500">{formatDate(c.date)}</td>
-                      <td className="px-5 py-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-bold uppercase tracking-wide border ${
-                          c.status === 'Resolved' ? 'bg-emerald-50 text-emerald-700 border-emerald-200/60' :
-                          c.status === 'Rejected' ? 'bg-red-50 text-red-700 border-red-200/60' :
-                          c.status === 'In Progress' ? 'bg-blue-50 text-blue-700 border-blue-200/60' :
-                          'bg-amber-50 text-amber-700 border-amber-200/60'
+                      <td className="py-3 px-2 max-w-[200px]">
+                        <div className="text-sm font-semibold text-surface-900 truncate">{c.title}</div>
+                        <div className="text-[11px] text-surface-400 truncate">{c.category}</div>
+                      </td>
+                      <td className="py-3 px-2 text-xs font-medium text-surface-500">{formatDate(c.date)}</td>
+                      <td className="py-3 px-2">
+                        <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest ${
+                          c.status === 'Resolved' ? 'text-emerald-600 bg-emerald-50' :
+                          c.status === 'Rejected' ? 'text-red-600 bg-red-50' :
+                          c.status === 'In Progress' ? 'text-blue-600 bg-blue-50' :
+                          'text-amber-600 bg-amber-50'
                         }`}>
                           {c.status}
                         </span>
                       </td>
-                      <td className="px-5 py-4 text-right">
-                        <button
-                          onClick={() => setSelected(c)}
-                          className="text-primary-600 hover:text-primary-700 hover:bg-primary-50 px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wide transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100"
-                        >
-                          View
+                      <td className="py-3 px-2 text-right">
+                        <button onClick={() => setSelected(c)} className="opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity text-xs font-bold text-primary-600 uppercase tracking-widest inline-flex items-center gap-1">
+                          View <Eye size={12} />
                         </button>
                       </td>
                     </tr>
@@ -184,161 +195,109 @@ export default function Complaints() {
                 </tbody>
               </table>
             </div>
-          </div>
-
-          {/* Cards – mobile only */}
-          <div className="md:hidden space-y-3">
-            {filtered.map((c) => (
-              <ComplaintCard key={c.id} complaint={c} onClick={() => setSelected(c)} />
-            ))}
-          </div>
-        </>
-      ) : (
-        <div className="bg-white border border-surface-200 rounded-lg p-10 text-center">
-          <FileQuestion size={40} className="text-surface-300 mx-auto mb-3" />
-          <h3 className="font-medium text-surface-700 mb-1">No complaints found</h3>
-          <p className="text-sm text-surface-500">
-            {myComplaints.length === 0
-              ? "You haven't submitted any complaints yet."
-              : 'No complaints match your filters.'}
-          </p>
+          ) : (
+            <div className="py-12 text-center">
+              <FileQuestion size={32} className="text-surface-300 mx-auto mb-3" />
+              <h3 className="text-sm font-semibold text-surface-700 mb-1">No requests found</h3>
+              <p className="text-[13px] text-surface-400">
+                {myComplaints.length === 0 ? "You haven't submitted any complaints yet." : 'No complaints match your filters.'}
+              </p>
+            </div>
+          )}
         </div>
-      )}
 
-      {showForm && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
-          style={{ backgroundColor: 'rgba(15, 23, 42, 0.4)' }}
-          onClick={(e) => {
-            if (e.target === e.currentTarget) resetForm();
-          }}
-        >
-          <div className="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between px-6 py-5 border-b border-surface-200">
-              <h2 className="text-xl font-bold text-surface-900 tracking-tight">Submit New Complaint</h2>
-              <button onClick={resetForm} className="p-2 rounded-xl hover:bg-surface-100 text-surface-500 transition-colors" aria-label="Close">
-                <X size={20} />
+        {/* RIGHT COLUMN: Instructions */}
+        <div className="lg:col-span-4 xl:col-span-3">
+          <div className="sticky top-20">
+            <h2 className="text-xs font-bold text-surface-400 uppercase tracking-[0.2em] mb-6 pb-2 border-b border-surface-200">How it works</h2>
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-sm font-semibold text-surface-900 mb-1">1. Report an Issue</h3>
+                <p className="text-xs text-surface-500 leading-relaxed">
+                  Provide detailed information and attach photos if applicable. The committee will review it within 24 hours.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-surface-900 mb-1">2. Track Progress</h3>
+                <p className="text-xs text-surface-500 leading-relaxed">
+                  Watch for status updates. 'In Progress' means maintenance staff has been assigned to your issue.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-sm font-semibold text-surface-900 mb-1">3. Resolution</h3>
+                <p className="text-xs text-surface-500 leading-relaxed">
+                  Once resolved, you will receive a notification and can view the committee's closing remarks.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-8 bg-surface-50 p-6">
+              <h3 className="text-xs font-bold text-surface-900 uppercase tracking-widest mb-2 flex items-center gap-2">
+                <MessageSquare size={14} className="text-primary-600" /> Need Help?
+              </h3>
+              <p className="text-xs text-surface-500 mb-4">
+                For urgent matters (security, fire, major leaks), please call the society office directly.
+              </p>
+              <button onClick={() => addToast('Calling office...', 'info')} className="text-xs font-bold text-primary-600 hover:text-primary-700 uppercase tracking-widest transition-colors flex items-center gap-1">
+                Emergency Contacts <ArrowRight size={12} />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="overflow-y-auto flex-1 px-6 py-5 space-y-5">
-              {/* Title */}
-              <div>
-                <label htmlFor="cmp-title" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Complaint Title</label>
-                <input
-                  id="cmp-title"
-                  type="text"
-                  value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.title ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
-                  placeholder="e.g. Water leakage in Block A"
-                />
-                {formErrors.title && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.title}</p>}
-              </div>
-
-              {/* Category */}
-              <div>
-                <label htmlFor="cmp-cat" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Category</label>
-                <select
-                  id="cmp-cat"
-                  value={form.category}
-                  onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.category ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
-                >
-                  <option value="">Select category</option>
-                  {COMPLAINT_CATEGORIES.map((c) => (
-                    <option key={c}>{c}</option>
-                  ))}
-                </select>
-                {formErrors.category && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.category}</p>}
-              </div>
-
-              {/* Description */}
-              <div>
-                <label htmlFor="cmp-desc" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Description</label>
-                <textarea
-                  id="cmp-desc"
-                  rows={3}
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all resize-none ${formErrors.description ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
-                  placeholder="Describe the issue in detail…"
-                />
-                {formErrors.description && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.description}</p>}
-              </div>
-
-              {/* Location + Flat */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label htmlFor="cmp-loc" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Location / Block</label>
-                  <input
-                    id="cmp-loc"
-                    type="text"
-                    value={form.location}
-                    onChange={(e) => setForm({ ...form, location: e.target.value })}
-                    className={`w-full px-4 py-3 rounded-xl border text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all ${formErrors.location ? 'border-red-400 bg-red-50' : 'border-surface-300 bg-white'}`}
-                    placeholder="Block A"
-                  />
-                  {formErrors.location && <p className="text-xs font-bold text-red-500 mt-1.5">{formErrors.location}</p>}
-                </div>
-                <div>
-                  <label htmlFor="cmp-flat" className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Flat Number</label>
-                  <input
-                    id="cmp-flat"
-                    type="text"
-                    value={form.flat}
-                    onChange={(e) => setForm({ ...form, flat: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-surface-300 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-all bg-white"
-                    placeholder="A-204"
-                  />
-                </div>
-              </div>
-
-              {/* File upload */}
-              <div>
-                <label className="block text-[13px] font-bold text-surface-700 uppercase tracking-wide mb-1.5">Attachment (optional)</label>
-                <label
-                  htmlFor="cmp-file"
-                  className="flex items-center gap-3 px-4 py-4 rounded-xl border-2 border-dashed border-surface-300 cursor-pointer hover:border-primary-400 hover:bg-primary-50/50 transition-all text-sm text-surface-500"
-                >
-                  <Upload size={18} className="text-surface-400" />
-                  {form.file ? (
-                    <span className="text-surface-900 font-bold">{form.file.name}</span>
-                  ) : (
-                    <span className="font-medium text-surface-500">Click to upload an image</span>
-                  )}
-                  <input
-                    id="cmp-file"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => setForm({ ...form, file: e.target.files?.[0] || null })}
-                  />
-                </label>
-              </div>
-
-              {/* Submit */}
-              <div className="flex justify-end gap-3 pt-4 border-t border-surface-100">
-                <button
-                  type="button"
-                  onClick={resetForm}
-                  className="px-5 py-2.5 text-sm font-bold text-surface-600 hover:bg-surface-100 rounded-xl transition-all"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-bold px-6 py-2.5 rounded-xl transition-all shadow-sm"
-                >
-                  <Send size={16} />
-                  Submit Complaint
-                </button>
-              </div>
-            </form>
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Detail modal */}
+      {/* New Complaint Form Modal */}
+      <Modal open={showForm} onClose={resetForm} title="Report an Issue">
+        <form onSubmit={handleSubmit} className="space-y-5 py-2">
+          <div>
+            <label htmlFor="cmp-title" className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Issue Title</label>
+            <input id="cmp-title" type="text" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={`w-full px-3 py-2 border-b font-medium text-sm focus:outline-none transition-colors ${formErrors.title ? 'border-red-400 bg-red-50' : 'border-surface-200 bg-transparent focus:border-primary-500'}`} placeholder="e.g. Water leakage in bathroom" />
+            {formErrors.title && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase">{formErrors.title}</p>}
+          </div>
+          
+          <div>
+            <label htmlFor="cmp-cat" className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Category</label>
+            <select id="cmp-cat" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className={`w-full px-3 py-2 border-b font-medium text-sm focus:outline-none transition-colors ${formErrors.category ? 'border-red-400 bg-red-50' : 'border-surface-200 bg-transparent focus:border-primary-500'}`}>
+              <option value="">Select category</option>
+              {COMPLAINT_CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+            </select>
+            {formErrors.category && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase">{formErrors.category}</p>}
+          </div>
+          
+          <div>
+            <label htmlFor="cmp-desc" className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Description</label>
+            <textarea id="cmp-desc" rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className={`w-full px-3 py-2 border font-medium text-sm focus:outline-none resize-none transition-colors ${formErrors.description ? 'border-red-400 bg-red-50' : 'border-surface-200 bg-transparent focus:border-primary-500'}`} placeholder="Describe the issue in detail…" />
+            {formErrors.description && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase">{formErrors.description}</p>}
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="cmp-loc" className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Location</label>
+              <input id="cmp-loc" type="text" value={form.location} onChange={(e) => setForm({ ...form, location: e.target.value })} className={`w-full px-3 py-2 border-b font-medium text-sm focus:outline-none transition-colors ${formErrors.location ? 'border-red-400 bg-red-50' : 'border-surface-200 bg-transparent focus:border-primary-500'}`} placeholder="e.g. Master Bedroom" />
+              {formErrors.location && <p className="text-[10px] font-bold text-red-500 mt-1 uppercase">{formErrors.location}</p>}
+            </div>
+            <div>
+              <label htmlFor="cmp-flat" className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Unit</label>
+              <input id="cmp-flat" type="text" value={form.flat} onChange={(e) => setForm({ ...form, flat: e.target.value })} className="w-full px-3 py-2 border-b border-surface-200 bg-surface-50 font-medium text-sm focus:outline-none focus:border-primary-500 transition-colors" placeholder="A-204" />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-[11px] font-bold text-surface-500 uppercase tracking-widest mb-1.5">Attachment (optional)</label>
+            <label htmlFor="cmp-file" className="flex items-center gap-3 px-4 py-4 border-2 border-dashed border-surface-200 cursor-pointer hover:border-primary-300 hover:bg-primary-50/30 transition-all text-sm text-surface-400">
+              <Upload size={16} />
+              {form.file ? <span className="text-surface-900 font-semibold">{form.file.name}</span> : <span className="font-medium">Click to upload an image</span>}
+              <input id="cmp-file" type="file" accept="image/*" className="hidden" onChange={(e) => setForm({ ...form, file: e.target.files?.[0] || null })} />
+            </label>
+          </div>
+          
+          <div className="flex justify-end gap-3 pt-6 mt-4 border-t border-surface-200">
+            <button type="button" onClick={resetForm} className="text-xs font-bold text-surface-500 uppercase tracking-widest hover:text-surface-900 transition-colors">Cancel</button>
+            <button type="submit" className="bg-primary-600 hover:bg-primary-700 text-white text-xs font-bold uppercase tracking-widest px-6 py-2.5 transition-colors">Submit Request</button>
+          </div>
+        </form>
+      </Modal>
+
       <ComplaintModal open={!!selected} onClose={() => setSelected(null)} complaint={selected} />
     </div>
   );

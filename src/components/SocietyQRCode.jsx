@@ -32,36 +32,34 @@ export default function SocietyQRCode() {
   };
 
   return (
-    <div className="bg-white border border-surface-200 shadow-sm w-full min-w-0 p-6 flex flex-col items-center">
-      <div className="text-center mb-8">
-        <h3 className="font-bold text-surface-900 tracking-tight text-lg mb-1">Quick Access</h3>
-        <p className="text-sm font-medium text-surface-500">Scan to open the workspace.</p>
-      </div>
+    <div className="bg-white border border-surface-200/80 rounded-xl w-full min-w-0 p-5 flex flex-col items-center">
+      <h3 className="text-sm font-semibold text-surface-900 mb-1">Quick Access</h3>
+      <p className="text-[11px] text-surface-400 mb-5">Scan to open the portal.</p>
       
-      <div className="bg-white p-4 border border-surface-200 mb-8 inline-block shadow-sm">
+      <div className="bg-white p-3 border border-surface-200 rounded-lg mb-5 inline-block">
         <QRCodeSVG 
           id="society-qr"
           value={loginUrl} 
-          size={180} 
+          size={140} 
           level="H"
           includeMargin={false}
-          fgColor="#171A19" // Graphite
+          fgColor="#0F172A"
         />
       </div>
       
-      <div className="flex items-center gap-3 w-full justify-center max-w-[280px]">
+      <div className="flex items-center gap-2 w-full justify-center max-w-[240px]">
         <button 
           onClick={copyLink}
-          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-surface-50 text-surface-900 border border-surface-200 text-sm font-semibold hover:bg-surface-100 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-50 text-surface-700 border border-surface-200 text-xs font-medium rounded-lg hover:bg-surface-100 transition-colors"
         >
-          <Copy size={16} />
+          <Copy size={12} />
           Copy
         </button>
         <button 
           onClick={downloadQR}
-          className="flex-1 flex items-center justify-center gap-2 py-2.5 px-3 bg-surface-900 text-white border border-transparent text-sm font-semibold hover:bg-surface-800 transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 bg-surface-900 text-white text-xs font-medium rounded-lg hover:bg-surface-800 transition-colors"
         >
-          <Download size={16} />
+          <Download size={12} />
           Save
         </button>
       </div>
